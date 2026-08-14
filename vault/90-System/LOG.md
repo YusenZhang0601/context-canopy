@@ -7,6 +7,17 @@ tags:
 
 # Log
 
+## [2026-08-15] release | ContextCanopy 公开仓库完成发布
+
+- 公开仓库已发布至 `https://github.com/YusenZhang0601/context-canopy`，默认分支为 `main`，仓库保持 public，并启用 Template repository 属性。
+- GitHub 已将首个公开提交 `8e24c645635887cff9f0a0bc4a62b0d4d59eb69e` 的 author 与 committer 关联到 `YusenZhang0601`；对应主分支 CI 与依赖更新检查均成功。
+- 配置 17 个检索 topics，覆盖 personal AI、Agent memory、second brain、local-first、Markdown、knowledge graph、LLM Wiki、Obsidian、MCP、多 Agent 与 privacy-first 等实际定位。
+- Dependabot 的 MCP SDK `1.29.0` → `1.30.0` 更新仅改 package 与 lockfile，Pull Request #1 独立 CI 成功后以 squash 合并为 `d6d9694e68d4b4871bb7a50e85c37221a0720bae`。
+- TonyRainforest GitHub 个人主页已新增 ContextCanopy 入口；README 首屏已在 GitHub 确认横幅、项目名、定位、徽章与中英文入口可渲染。
+- 本次未执行 npm publish、GitHub Release、真实个人 Vault 上传或陌生设备安装；这些状态不得由本条发布记录替代。
+
+**状态**: ✅ GitHub 公开发布完成；⏳ npm 发布与陌生设备安装未执行
+
 ## [2026-08-15] verification-result | ContextCanopy 本地发布候选门禁通过
 
 - Vault compiler 与 lint 为 0 error、0 warning，7 个 canonical 页面保持单一弱连通分量，无孤岛、死链、歧义链接、登记缺口或来源覆盖缺口。
