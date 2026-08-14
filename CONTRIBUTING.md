@@ -4,9 +4,10 @@ Thank you for helping make personal AI continuity more inspectable, portable, an
 
 ## Good contribution areas
 
-- host adapters and setup guidance;
+- preview-first import adapters for provider exports and native memory files;
+- host adapters, migration fixtures, and fresh-session setup evidence;
 - adversarial tests for path, symlink, transaction, and privacy boundaries;
-- clearer onboarding and cross-platform fixes;
+- clearer onboarding and cross-platform portability fixes;
 - small, realistic seed-graph examples;
 - improvements to Skills, MCP tools, or compiler diagnostics.
 

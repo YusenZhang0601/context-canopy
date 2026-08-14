@@ -1,7 +1,7 @@
 {
   "name": "context-canopy-mcp",
   "version": "1.0.0",
-  "description": "Thin local MCP bridge for ContextCanopy knowledge and personal AI authority",
+  "description": "Thin local MCP bridge for portable ContextCanopy knowledge and personal AI authority",
   "type": "module",
   "main": "index.js",
   "bin": {
@@ -28,6 +28,8 @@
     "second-brain",
     "personal-ai",
     "agent-memory",
+    "agent-portability",
+    "cross-agent-memory",
     "local-first"
   ],
   "author": "TonyRainforest <zhangyswx@163.com> (https://github.com/YusenZhang0601)",

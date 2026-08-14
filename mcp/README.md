@@ -1,6 +1,6 @@
 # ContextCanopy MCP
 
-Local MCP server for searching and managing the ContextCanopy knowledge base and personal AI substrate.
+Local MCP server for searching and managing ContextCanopy's portable knowledge base and personal AI authority.
 
 ## Features
 
