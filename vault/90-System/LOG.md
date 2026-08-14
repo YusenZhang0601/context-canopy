@@ -7,6 +7,24 @@ tags:
 
 # Log
 
+## [2026-08-15] verification-result | ContextCanopy 本地发布候选门禁通过
+
+- Vault compiler 与 lint 为 0 error、0 warning，7 个 canonical 页面保持单一弱连通分量，无孤岛、死链、歧义链接、登记缺口或来源覆盖缺口。
+- 27 项 Python compiler 回归测试、24 项 MCP 测试、隔离 full-vault stdio smoke、Node syntax check、`npm pack --dry-run` 与 `npm audit --audit-level=low` 全部通过；smoke 证明 live Vault 字节未变化且临时副本已删除。
+- 本地 Markdown 链接、GitHub workflow YAML、package/plugin JSON、绝对本机路径与常见 secret pattern 扫描通过；环境未安装 gitleaks，因此未把正则扫描表述为完整秘密审计。
+- `context-canopy-mcp` 在 npm registry 查询为未占用，但本次未执行 npm publish；公开 GitHub 仓库与外部新设备安装仍是独立后续验证。
+
+**状态**: ✅ 本地发布候选通过；⏳ 等待公开 GitHub 发布与远端 CI
+
+## [2026-08-15] release | ContextCanopy 公开品牌与社区入口收口
+
+- 将公开项目名确定为 ContextCanopy，并保留 `second-brain-*` Skill ID、MCP 配置 key 与 `SECOND_BRAIN_*` 环境变量作为 v1 兼容协议命名。
+- GitHub 默认 README 改为英文首屏，新增完整中文镜像、TonyRainforest System Builder 横幅、差异定位、隐私边界、快速启动与真实验证命令。
+- 新增 CI、Issue/PR 模板、Dependabot、贡献指南、安全策略与行为准则；更新公开 package、插件显示名、Vault 首页与 MIT copyright。
+- 本条仅记录本地发布候选改造；公开仓库创建、GitHub topics、社交预览与陌生设备安装仍需独立验证，未在此宣称完成。
+
+**状态**: ⏳ 等待全量本地门禁、公开 GitHub 创建与发布后核验
+
 ## [2026-08-14] verification-result | Release 本地发布候选门禁完成
 
 - compiler、lint、单连通图谱、27 项 Python 单测、24 项 MCP 单测、依赖审计 0、fresh stdio smoke、16 个 Skill validator、Skill 镜像一致性与敏感路径扫描均通过。

@@ -1,4 +1,4 @@
-# Second Brain Plugin
+# ContextCanopy Plugin
 
 Local MCP integration for the canonical knowledge graph plus a thin, allowlisted personal-AI authority bridge.
 
@@ -21,7 +21,7 @@ After the capture lock is acquired, a compiler baseline runs before any write. I
 ## Requirements
 
 - Node.js (>= 18.0.0)
-- Second Brain Knowledge Vault directory (`vault/`)
+- ContextCanopy Knowledge Vault directory (`vault/`)
 - Read access to all three canonical domains, `04-Sources`, `90-System`, and the external authority roots already registered in canonical `sources:`
 - Write access to `04-Sources` for source-first capture and to `01-Knowledge` plus `90-System` for transactional canonical updates
 

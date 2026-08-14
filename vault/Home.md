@@ -5,9 +5,9 @@ tags:
   - system/home
 ---
 
-# Second Brain
+# ContextCanopy
 
-这里是这个 Obsidian 库的入口。先把材料放进 Inbox，再把稳定内容沉淀成三类图谱节点：知识、感悟、个人信息。
+这里是 ContextCanopy 的 Obsidian Vault 入口。先把材料放进 Inbox，再把稳定内容沉淀成三类图谱节点：知识、感悟、个人信息。公开仓库只是分发模板；个性化内容必须留在本地或独立的私有 authority 仓库。
 
 ## 快速入口
 

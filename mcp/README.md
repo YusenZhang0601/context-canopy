@@ -1,6 +1,6 @@
-# Second Brain MCP
+# ContextCanopy MCP
 
-MCP server for searching and managing the Second Brain knowledge base and personal AI substrate.
+Local MCP server for searching and managing the ContextCanopy knowledge base and personal AI substrate.
 
 ## Features
 
@@ -22,7 +22,7 @@ You: "保存这次调试经验到知识库"
 AI: [triggers the host-native capture-knowledge skill]
 AI: [stores the durable source, extracts atomic candidates, presents them]
 AI: [confirms one stable scope per candidate]
-AI: [saves candidates serially to Second Brain]
+AI: [saves candidates serially to ContextCanopy]
 ```
 
 **Skill triggers:**
@@ -74,7 +74,7 @@ Search the knowledge base for relevant information.
 
 ### 7. `capture_from_conversation`
 
-Capture knowledge from conversation/documents and transactionally save to Second Brain.
+Capture knowledge from conversation/documents and transactionally save to ContextCanopy.
 
 **Parameters:**
 - `title` (string): Entry title

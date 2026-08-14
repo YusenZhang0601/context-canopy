@@ -1,12 +1,21 @@
 {
-  "name": "second-brain-mcp",
+  "name": "context-canopy-mcp",
   "version": "1.0.0",
-  "description": "Thin MCP bridge for Second Brain knowledge and personal AI authority",
+  "description": "Thin local MCP bridge for ContextCanopy knowledge and personal AI authority",
   "type": "module",
   "main": "index.js",
   "bin": {
-    "second-brain-mcp": "./index.js"
+    "context-canopy-mcp": "./index.js"
   },
+  "files": [
+    ".claude-plugin/",
+    "index.js",
+    "lib/",
+    "scripts/",
+    "skills/",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "start": "node index.js",
     "test": "node --test",
@@ -15,11 +24,23 @@
   "keywords": [
     "mcp",
     "knowledge-base",
+    "context-canopy",
     "second-brain",
-    "personal-ai"
+    "personal-ai",
+    "agent-memory",
+    "local-first"
   ],
-  "author": "TonyRainforest",
+  "author": "TonyRainforest <zhangyswx@163.com> (https://github.com/YusenZhang0601)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YusenZhang0601/context-canopy.git",
+    "directory": "mcp"
+  },
+  "bugs": {
+    "url": "https://github.com/YusenZhang0601/context-canopy/issues"
+  },
+  "homepage": "https://github.com/YusenZhang0601/context-canopy#readme",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
     "yaml": "^2.8.1"

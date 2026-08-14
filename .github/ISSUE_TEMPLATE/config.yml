@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/YusenZhang0601/context-canopy/security/policy
+    about: Report security issues privately; do not open a public issue.

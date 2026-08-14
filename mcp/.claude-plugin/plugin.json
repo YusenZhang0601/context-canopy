@@ -1,8 +1,8 @@
 {
-  "name": "second-brain",
+  "name": "context-canopy",
   "version": "1.0.0",
-  "displayName": "Second Brain",
-  "description": "Search and capture knowledge, and read allowlisted personal AI authority",
+  "displayName": "ContextCanopy",
+  "description": "Local personal AI continuity: search and capture knowledge, then read allowlisted user authority",
   "author": "TonyRainforest",
   "license": "MIT",
   "mcp": {
@@ -18,7 +18,7 @@
     }
   ],
   "categories": ["productivity", "knowledge-management"],
-  "tags": ["knowledge-base", "search", "notes", "obsidian"],
+  "tags": ["personal-ai", "agent-memory", "knowledge-base", "local-first", "mcp", "obsidian"],
   "icon": "📚",
   "permissions": {
     "filesystem": {

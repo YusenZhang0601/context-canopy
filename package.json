@@ -1,7 +1,7 @@
 {
-  "name": "second-brain",
+  "name": "context-canopy",
   "version": "1.0.0",
-  "description": "Vendor-independent personal AI substrate, multi-agent skills, and Obsidian knowledge vault",
+  "description": "Local-first personal AI substrate for shared memory, identity, goals, and evidence across agents",
   "type": "module",
   "private": true,
   "scripts": {
@@ -14,16 +14,34 @@
     "smoke": "cd mcp && SECOND_BRAIN_FULL_VAULT_PATH=../vault npm run test:stdio-full-vault"
   },
   "keywords": [
-    "second-brain",
     "personal-ai",
+    "agent-memory",
+    "ai-memory",
+    "second-brain",
+    "local-first",
+    "markdown",
+    "knowledge-graph",
+    "llm-wiki",
     "obsidian",
     "mcp",
+    "model-context-protocol",
     "knowledge-management",
     "ai-agent",
-    "skills"
+    "multi-agent",
+    "agent-skills",
+    "self-hosted",
+    "privacy-first"
   ],
-  "author": "TonyRainforest",
+  "author": "TonyRainforest <zhangyswx@163.com> (https://github.com/YusenZhang0601)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YusenZhang0601/context-canopy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YusenZhang0601/context-canopy/issues"
+  },
+  "homepage": "https://github.com/YusenZhang0601/context-canopy#readme",
   "engines": {
     "node": ">=18.0.0"
   }
