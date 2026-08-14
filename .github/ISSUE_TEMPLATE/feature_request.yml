@@ -25,6 +25,7 @@ body:
         - Vault and compiler
         - MCP server
         - Agent Skills
+        - Import and portability
         - Host integration
         - Documentation and onboarding
         - Other

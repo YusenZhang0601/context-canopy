@@ -1,7 +1,7 @@
 {
   "name": "context-canopy",
   "version": "1.0.0",
-  "description": "Local-first personal AI substrate for shared memory, identity, goals, and evidence across agents",
+  "description": "Portable, local-first personal AI context: switch agents without losing memory, identity, goals, rules, or evidence",
   "type": "module",
   "private": true,
   "scripts": {
@@ -28,6 +28,9 @@
     "knowledge-management",
     "ai-agent",
     "multi-agent",
+    "agent-portability",
+    "cross-agent-memory",
+    "context-engineering",
     "agent-skills",
     "self-hosted",
     "privacy-first"

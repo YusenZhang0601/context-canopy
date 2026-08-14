@@ -2,7 +2,7 @@
   "name": "context-canopy",
   "version": "1.0.0",
   "displayName": "ContextCanopy",
-  "description": "Local personal AI continuity: search and capture knowledge, then read allowlisted user authority",
+  "description": "Portable personal AI context: search and capture knowledge, then read allowlisted user authority across agents",
   "author": "TonyRainforest",
   "license": "MIT",
   "mcp": {
@@ -18,7 +18,7 @@
     }
   ],
   "categories": ["productivity", "knowledge-management"],
-  "tags": ["personal-ai", "agent-memory", "knowledge-base", "local-first", "mcp", "obsidian"],
+  "tags": ["personal-ai", "agent-memory", "agent-portability", "cross-agent-memory", "knowledge-base", "local-first", "mcp", "obsidian"],
   "icon": "📚",
   "permissions": {
     "filesystem": {
