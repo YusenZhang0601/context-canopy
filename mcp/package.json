@@ -1,0 +1,27 @@
+{
+  "name": "second-brain-mcp",
+  "version": "1.0.0",
+  "description": "Thin MCP bridge for Second Brain knowledge and personal AI authority",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "second-brain-mcp": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "node --test",
+    "test:stdio-full-vault": "node scripts/stdio-full-vault-smoke.mjs"
+  },
+  "keywords": [
+    "mcp",
+    "knowledge-base",
+    "second-brain",
+    "personal-ai"
+  ],
+  "author": "TonyRainforest",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "yaml": "^2.8.1"
+  }
+}

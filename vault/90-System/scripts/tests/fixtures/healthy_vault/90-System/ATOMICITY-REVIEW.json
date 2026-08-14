@@ -1,0 +1,27 @@
+{
+  "entries": {
+    "01-Knowledge/TopicA.md": {
+      "form": "atomic",
+      "reviewed_at": "2026-07-19",
+      "reviewed_by": "compiler fixture",
+      "scope": "Fixture topic A 的单一测试概念。",
+      "sha256": "cccad44484925dac64717269bb8618ef9ae4b1161443e39976f2e13b9e9b2522"
+    },
+    "01-Knowledge/TopicB.md": {
+      "form": "atomic",
+      "reviewed_at": "2026-07-19",
+      "reviewed_by": "compiler fixture",
+      "scope": "Fixture topic B 的单一测试概念。",
+      "sha256": "8086e0628d32f8fce16fc85cce85a10d7ebec3b62ee0c585e2d3216ab9799d2e"
+    },
+    "01-Knowledge/TopicC.md": {
+      "form": "atomic",
+      "reviewed_at": "2026-07-19",
+      "reviewed_by": "compiler fixture",
+      "scope": "Fixture topic C 的单一测试概念。",
+      "sha256": "3f090c42e3d7e8c87e1190fc6151439303a66aac9432fc640c5cae5f7f9a122d"
+    }
+  },
+  "review_date": "2026-07-19",
+  "version": 1
+}

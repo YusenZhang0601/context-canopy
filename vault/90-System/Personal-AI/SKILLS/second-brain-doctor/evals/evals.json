@@ -1,0 +1,29 @@
+{
+  "skill_name": "second-brain-doctor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "检查这台 Mac 上的 Codex 是否真的完整接入 Second Brain。只诊断，别修，尤其不要改我的全局 AGENTS。",
+      "expected_output": "Agent 进行只读现场、Vault、七 Skills、MCP、管理块、Git 私有远端、秘密卫生和 fresh-session 证据检查；用 PASS/DRIFT/BLOCKED/UNKNOWN 给出结论，并将修复路由到 Attach 或 Sync。",
+      "files": [],
+      "expectations": [
+        "不会写文件、重建派生视图、提交 Git 或删除 lock",
+        "Codex 调用语法报告为 $second-brain-* 或 /skills",
+        "不会用当前长对话代替 fresh-session 证据",
+        "秘密扫描不打印匹配值"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Hermes 能连上 MCP，所以应该全绿了吧？帮我确认一下。",
+      "expected_output": "Agent 不把 MCP 握手等同完整接入，还检查 common/profile、七 Skills、身份注入、旧 owner 竞争、Git 和新会话行为；若证据不全则诚实给 DEGRADED/UNKNOWN。",
+      "files": [],
+      "expectations": [
+        "MCP 连通只是一个检查面而非总健康结论",
+        "检查 Hermes profile 独立性和委派传播规则",
+        "检查旧 Hermes memory 或 maintenance Skill 是否竞争 authority",
+        "每个 PASS 都有当前可复核证据"
+      ]
+    }
+  ]
+}

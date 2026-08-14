@@ -1,0 +1,4 @@
+interface:
+  display_name: "Second Brain - Distill（榨取历史对话）"
+  short_description: "完整榨取历史对话及附件，沉淀有价值信息后按门禁清理原料"
+  default_prompt: "使用 $second-brain-distill 榨取我指定的历史对话批次，并在完整性门禁通过后清理原料。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Second Brain - Climb（维护长期方向）"
+  short_description: "维护长期方向的山顶、当前位置、路线、阻点和下一步证据"
+  default_prompt: "使用 $second-brain-climb 更新这个长期方向的当前位置、路线、阻点和下一步证据。"

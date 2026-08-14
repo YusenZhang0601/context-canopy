@@ -1,0 +1,34 @@
+# 用户协作身份初始化问卷（不要把本文件复制进主图谱）
+
+本文件是 bootstrap 提问清单，不是 canonical 页面模板。直接复制为 `*.md` 会制造第二个个人身份 owner，并绕过 reciprocal、来源和 `ATOMICITY-REVIEW.json` 门禁。
+
+## 正确初始化方式
+
+1. 先编辑现有唯一 owner：
+   - `03-Personal/Profile/个人AI协作体系.md`
+   - `03-Personal/Mountains/个人AI基底.md`
+2. 只把用户明确确认的内容写入 owner；不要把下面的示例答案当成用户事实。
+3. 若确实需要新增独立个人事实页，按 Vault `SCHEMA.md` 与 `WORKFLOWS.md` 走完整 canonical 事务：查重、至少两条真实关系、一个 reciprocal、来源、privacy、freshness、原子性登记、LOG 和 compiler。
+4. 修改 owner 后同步 `90-System/ATOMICITY-REVIEW.json` 的 SHA-256，并运行：
+
+```bash
+python3 90-System/scripts/compile_vault.py --write-derived --format json
+python3 90-System/scripts/compile_vault.py --check --format json
+bash 90-System/scripts/lint_vault.sh
+```
+
+## 引导问题
+
+- 你希望 AI 如何称呼你？
+- 默认使用什么语言？哪些术语应保留原文？
+- 你当前使用哪些 Agent 或宿主？每个宿主最适合承担什么角色？
+- 哪些协作偏好已经由你明确确认并适合跨 Agent 复用？
+- 哪些信息属于 private 或 sensitive，不应进入 Git 或普通回复？
+- 你正在长期攀登的第一个方向是什么？可识别的山顶、当前位置、关键差距和下一信息行动分别是什么？
+- 你选择哪种 authority 模式？
+  - `local-only`：只在本机保存和备份，不向远端推送个人数据。
+  - `private-remote`：把个人 authority 推送到你自己控制的私有仓库；公开分发仓库只能作为只读 `upstream`。
+
+## 示例边界
+
+可以把“偏好中文结论”“Codex 负责工程实施”等作为待确认候选，但只有用户确认后才能写成个人事实。不要预填姓名、邮箱、单位、凭据、账号、设备路径或任何敏感值。

@@ -1,0 +1,29 @@
+{
+  "skill_name": "second-brain-climb",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "更新‘个人AI基底’这座山：今天已经让 Codex 和 Hermes 都读到同一份 common rules，但跨设备 fresh clone 还没验证。告诉我现在在哪、下一步最值得验证什么。",
+      "expected_output": "Agent 用真实接入证据更新 current/checkpoint，把跨设备验证登记为关键 uncertainty，而非虚构完成率；选择一个有判定分支的 next information action，并保持原 summit 不变。",
+      "files": [],
+      "expectations": [
+        "覆盖 current、gap、evidence、uncertainty、active bet 和 next information action",
+        "下一信息动作写出结果 A/B 对路线的含义",
+        "链接真实接入工作而不复制完整项目日志",
+        "不因普通进展擅自修改 summit"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "我觉得个人AI基底以后就只服务 Claude，别的 Agent 都不管了。直接把山顶改掉并把旧路线标记为放弃。",
+      "expected_output": "Agent 将 summit 和路线放弃识别为高风险长期方向变化，先对比旧 summit、提议的新 summit、证据和迁移后果，请用户确认；确认前只记录候选，不改 authority。",
+      "files": [],
+      "expectations": [
+        "summit 修改必须显式请求用户确认",
+        "不会把一句即时想法直接写成长期身份事实",
+        "说明 switch 与 abandon 的证据标准和影响",
+        "确认前不提交 mountain authority 变更"
+      ]
+    }
+  ]
+}

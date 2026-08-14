@@ -1,0 +1,4 @@
+interface:
+  display_name: "Second Brain - Help（查看能力入口）"
+  short_description: "查看 Second Brain 全部能力，并选择正确的 Skill 入口"
+  default_prompt: "使用 $second-brain-help 列出全部 Second Brain 能力，并告诉我当前任务该用哪个入口。"

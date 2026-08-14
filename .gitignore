@@ -1,0 +1,44 @@
+# Dependencies & Cache
+node_modules/
+package-lock.json.tmp
+__pycache__/
+*.py[cod]
+*$py.class
+
+# macOS System Files
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Environment and Credentials
+.env
+.env.local
+*.pem
+*.key
+*.token
+
+# Locks and Runtime Caches
+90-System/.capture.lock
+vault/90-System/.capture.lock
+*.lock
+
+# Agent Workspaces & Scratchpads
+.agents/
+.claude/
+.codex/
+.gemini/
+
+# Obsidian App Local Workspaces
+.obsidian/workspace*
+.obsidian/cache/
+.obsidian/indexed*
+
+# Logs and Test Artifacts
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+test-output/
+coverage/
+.tmp/

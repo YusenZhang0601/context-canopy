@@ -1,0 +1,4 @@
+interface:
+  display_name: "Capture Knowledge（沉淀原子知识卡片）"
+  short_description: "将对话、文档或经验沉淀为 Second Brain 原子知识卡片并维护图谱关系"
+  default_prompt: "使用 $capture-knowledge 把当前材料提取并沉淀为原子知识卡片。"

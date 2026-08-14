@@ -1,0 +1,55 @@
+{
+  "entries": {
+    "01-Knowledge/Architecture/LLM-Wiki核心理念.md": {
+      "form": "atomic",
+      "reviewed_at": "2026-08-14",
+      "reviewed_by": "release-compiler",
+      "scope": "LLM Wiki 架构核心理念与编译型知识库设计原则。",
+      "sha256": "162418294e4fe6bfc04e822c88a03366f040d77f9e5528fbc77e6e4a148f194a"
+    },
+    "01-Knowledge/Architecture/个人AI基底架构.md": {
+      "form": "atomic",
+      "reviewed_at": "2026-08-14",
+      "reviewed_by": "release-compiler",
+      "scope": "跨 Agent 个人 AI 基础设施与本地知识库核心架构。",
+      "sha256": "445330d9a674284196b232d606798bd89c5231a7367b9e8badf2b4d2c9bf944e"
+    },
+    "01-Knowledge/Methodology/原子化知识构建原则.md": {
+      "form": "atomic",
+      "reviewed_at": "2026-08-14",
+      "reviewed_by": "release-compiler",
+      "scope": "原子卡片划分标准、单一主题范围与双向关系网原则。",
+      "sha256": "0ed8f1b0db12dfad9a653a1db66877302b5a9a0d0ce6be8fd68f07d31f87b8d9"
+    },
+    "02-Insights/Philosophy/最小改动与一步到位原则.md": {
+      "form": "atomic",
+      "reviewed_at": "2026-08-14",
+      "reviewed_by": "release-compiler",
+      "scope": "架构设计一步到位与代码调试实施最小改动的平衡哲学。",
+      "sha256": "22638b0e64a07c63a362dabed1e7a77b252bed07ecc7f17b387eb11e27b331f0"
+    },
+    "02-Insights/Workplace/跨Agent协作规范.md": {
+      "form": "atomic",
+      "reviewed_at": "2026-08-14",
+      "reviewed_by": "release-compiler",
+      "scope": "多 Agent 协作体系中通用规则与专属角色的分工准则。",
+      "sha256": "67a9c3d69224acd4d46039d07f7513e3cc8c6067bad887ffdaba8eacb44d1c9f"
+    },
+    "03-Personal/Mountains/个人AI基底.md": {
+      "form": "atomic",
+      "reviewed_at": "2026-08-14",
+      "reviewed_by": "release-compiler",
+      "scope": "个人 AI 基底长期发展方向、山顶定义与爬山规划模型。",
+      "sha256": "68c26488a10ace1926056c0b8d8df71d68962fd39345616837bd9bbefb417b25"
+    },
+    "03-Personal/Profile/个人AI协作体系.md": {
+      "form": "entity",
+      "reviewed_at": "2026-08-14",
+      "reviewed_by": "release-compiler",
+      "scope": "用户个人 AI 协作架构与多 Agent 分工的通用配置蓝本。",
+      "sha256": "f579db366446d9da0f484a6829c57dcd8e6ab05392935020287759d6e8038156"
+    }
+  },
+  "review_date": "2026-08-14",
+  "version": 1
+}

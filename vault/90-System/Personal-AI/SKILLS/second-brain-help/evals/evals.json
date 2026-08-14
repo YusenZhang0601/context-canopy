@@ -1,0 +1,29 @@
+{
+  "skill_name": "second-brain-help",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我又忘了那几个 Second Brain 技能叫什么了。我现在在 Codex，只想检查装得对不对，不要改东西。",
+      "expected_output": "Agent 列出七个统一名称和中文显示，推荐 Doctor，解释其只读边界，并给出 Codex 的 $second-brain-doctor 或 /skills 语法。",
+      "files": [],
+      "expectations": [
+        "完整列出七个 second-brain-* Skill",
+        "每项保留 Second Brain - 前缀和中文注释",
+        "选择 Doctor 而不是 Attach 或 Sync",
+        "不会声称 Codex 原生使用 /second-brain-doctor"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "我想把几百条旧 Agent 聊天里的经验留下来，然后把聊天清掉腾空间，该用 learn 还是别的？我在 AntiGravity。",
+      "expected_output": "Agent 推荐 Distill 而非 Learn，说明历史批次、附件晋升、严格 allowlist 和删除门禁，并给出 /second-brain-distill。",
+      "files": [],
+      "expectations": [
+        "清楚区分当前对话 Learn 与历史批量 Distill",
+        "给出 AntiGravity 的 /second-brain-distill 调用语法",
+        "主动说明删除需要精确范围、receipt 和恢复验证",
+        "不在 Help 阶段直接扫描或删除历史对话"
+      ]
+    }
+  ]
+}

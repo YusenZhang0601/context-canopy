@@ -1,0 +1,4 @@
+interface:
+  display_name: "Second Brain - Attach（接入新 Agent）"
+  short_description: "把全新或重置后的 Agent 接入统一的个人 AI 基底"
+  default_prompt: "使用 $second-brain-attach 把这个新 Agent 接入我的 Second Brain，并在全新会话完成验证。"

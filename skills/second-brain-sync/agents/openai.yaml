@@ -1,0 +1,4 @@
+interface:
+  display_name: "Second Brain - Sync（同步规则与角色）"
+  short_description: "同步通用个人规则与当前 Agent 的独立角色配置"
+  default_prompt: "使用 $second-brain-sync 对齐当前 Agent 与 Second Brain 的通用规则和独立角色配置。"

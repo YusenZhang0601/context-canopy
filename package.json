@@ -1,0 +1,30 @@
+{
+  "name": "second-brain",
+  "version": "1.0.0",
+  "description": "Vendor-independent personal AI substrate, multi-agent skills, and Obsidian knowledge vault",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "npm run test:vault && npm run test:mcp",
+    "test:vault": "cd vault && python3 90-System/scripts/compile_vault.py --check --format json && bash 90-System/scripts/lint_vault.sh",
+    "test:mcp": "cd mcp && npm test",
+    "compile": "cd vault && python3 90-System/scripts/compile_vault.py --check --format json",
+    "compile:write": "cd vault && python3 90-System/scripts/compile_vault.py --write-derived --format json",
+    "lint": "cd vault && bash 90-System/scripts/lint_vault.sh",
+    "smoke": "cd mcp && SECOND_BRAIN_FULL_VAULT_PATH=../vault npm run test:stdio-full-vault"
+  },
+  "keywords": [
+    "second-brain",
+    "personal-ai",
+    "obsidian",
+    "mcp",
+    "knowledge-management",
+    "ai-agent",
+    "skills"
+  ],
+  "author": "TonyRainforest",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "skill_name": "second-brain-attach",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我刚在一台新 Mac 上装了 Hermes，Second Brain 私有仓库还没克隆。请把它接入我的个人 AI 基底并自检，但不要动系统代理。",
+      "expected_output": "Agent 发现 Hermes 的真实安装表面，克隆唯一私有 Vault，注册七个 Skills、接入薄 MCP、注入通用规则和 Hermes 独立 profile，留下无秘密 receipt，并在新会话运行 Doctor；代理配置保持不变。",
+      "files": [],
+      "expectations": [
+        "在任何写入前检查 lock、Git 身份、配置备份和秘密边界",
+        "不引入数据库、守护进程、外部推理 API 或 Agent fork",
+        "区分 COMMON-RULES authority 与 Hermes profile authority",
+        "使用 Hermes 的 /second-brain-* 调用语法并要求新会话验收"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "这台机器上的 Codex 已经有 second-brain MCP，但技能似乎没装全。修复成完整接入，别覆盖我现有的全局 AGENTS 规则。",
+      "expected_output": "Agent 把任务识别为修复而非重装，保留非管理块，补齐七个 Skill，验证既有 MCP，注入短管理块，并用 Codex 的 $second-brain-doctor 或 /skills 新会话验收。",
+      "files": [],
+      "expectations": [
+        "不会声称 Codex 原生支持字面量 /second-brain-doctor",
+        "只更新可识别管理块并保留宿主非冲突规则",
+        "将物理副本视作投影并记录 authority 与投影哈希",
+        "完成结论由 fresh-session Doctor 证据支持"
+      ]
+    }
+  ]
+}

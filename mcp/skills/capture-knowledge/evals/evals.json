@@ -1,0 +1,28 @@
+{
+  "skill_name": "capture-knowledge",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "把刚刚讨论的关于 LLM Wiki 架构的核心理念整理保存到知识库。",
+      "expected_output": "Agent 先固化来源或使用当前会话作为来源，提取单一稳定概念候选，查重，并在确认后调用 capture_from_conversation 事务式写入，维护双向语义关系和原子性登记。",
+      "files": [],
+      "expectations": [
+        "不将整个长篇讨论做成一张大卡",
+        "声明 card_form 为 atomic 或 entity 并提供一句话 atomic_scope",
+        "至少建立两条 canonical 关系且至少一条为 reciprocal",
+        "通过编译器验证并更新索引"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "我有一份项目的完整 README，帮我直接存进 01-Knowledge 变成一张卡片。",
+      "expected_output": "Agent 拒绝将完整 README 直接做成单一大卡，说明规范并建议将原文存入 04-Sources，从中提取 1-3 个稳定原子概念分别沉淀。",
+      "files": [],
+      "expectations": [
+        "拒绝文档级大卡反模式",
+        "指导原文先入 04-Sources 证据层",
+        "按原子化知识构建原则拆分稳定概念候选"
+      ]
+    }
+  ]
+}

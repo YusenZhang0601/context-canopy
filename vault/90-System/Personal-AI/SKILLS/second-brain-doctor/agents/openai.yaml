@@ -1,0 +1,4 @@
+interface:
+  display_name: "Second Brain - Doctor（检查接入状态）"
+  short_description: "检查 Agent 的身份注入、七个 Skills、MCP 与同步漂移"
+  default_prompt: "使用 $second-brain-doctor 只读检查当前 Agent 是否完整接入我的 Second Brain。"

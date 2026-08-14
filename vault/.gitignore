@@ -1,0 +1,11 @@
+# Obsidian Local Caches
+.obsidian/workspace*
+.obsidian/cache/
+.obsidian/indexed*
+
+# System locks & temporary files
+90-System/.capture.lock
+*.lock
+.DS_Store
+__pycache__/
+*.py[cod]
