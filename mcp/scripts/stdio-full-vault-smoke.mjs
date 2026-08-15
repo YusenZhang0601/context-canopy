@@ -199,14 +199,23 @@ function findPersonalAiFixture(vaultPath) {
   const agentRoot = path.join(vaultPath, '90-System/Personal-AI/AGENTS');
   const mountainRoot = path.join(vaultPath, '03-Personal/Mountains');
   const skillRoot = path.join(vaultPath, '90-System/Personal-AI/SKILLS');
-  for (const required of [commonRules, overview, agentRoot, mountainRoot, skillRoot]) {
+  const sourceAgentId = 'claude';
+  const targetAgentId = 'codex';
+  const sourceAgentFile = path.join(agentRoot, `${sourceAgentId}.md`);
+  const targetAgentFile = path.join(agentRoot, `${targetAgentId}.md`);
+  for (const required of [
+    commonRules,
+    overview,
+    agentRoot,
+    sourceAgentFile,
+    targetAgentFile,
+    mountainRoot,
+    skillRoot
+  ]) {
     if (!required || !fs.existsSync(required)) {
       throw new Error(`full Vault is missing personal AI authority: ${required ? path.relative(vaultPath, required) : 'overview'}`);
     }
   }
-  const agentFile = fs.readdirSync(agentRoot, { withFileTypes: true })
-    .filter(entry => entry.isFile() && /^[a-z0-9][a-z0-9_-]*\.md$/.test(entry.name))
-    .sort((left, right) => left.name.localeCompare(right.name))[0];
   const mountainFile = fs.readdirSync(mountainRoot, { withFileTypes: true })
     .filter(entry => entry.isFile() && entry.name.endsWith('.md') && !entry.name.startsWith('.'))
     .sort((left, right) => left.name.localeCompare(right.name))[0];
@@ -217,11 +226,12 @@ function findPersonalAiFixture(vaultPath) {
       fs.existsSync(path.join(skillRoot, entry.name, 'SKILL.md'))
     ))
     .sort((left, right) => left.name.localeCompare(right.name))[0];
-  if (!agentFile || !mountainFile || !skillDirectory) {
+  if (!mountainFile || !skillDirectory) {
     throw new Error('full Vault personal AI authority lacks an agent, mountain, or Skill fixture');
   }
   return {
-    agentId: path.basename(agentFile.name, '.md'),
+    sourceAgentId,
+    targetAgentId,
     mountain: path.basename(mountainFile.name, '.md'),
     skillId: skillDirectory.name,
     overviewRelative: path.relative(vaultPath, overview).split(path.sep).join('/')
@@ -348,7 +358,7 @@ async function runSmoke() {
       serverStderr += chunk.toString();
     });
     client = new Client(
-      { name: 'second-brain-full-vault-smoke', version: '1.0.0' },
+      { name: 'context-canopy-agent-a-claude', version: '1.0.0' },
       { capabilities: {} }
     );
     const packageVersion = JSON.parse(
@@ -386,17 +396,17 @@ async function runSmoke() {
     assert.equal(commonRules.path, '90-System/Personal-AI/COMMON-RULES.md');
     assert.ok(commonRules.content.length > 0, 'get_common_rules returned empty content');
 
-    const agentProfile = parseToolPayload(
+    const sourceAgentProfile = parseToolPayload(
       await client.callTool(
-        { name: 'get_agent_profile', arguments: { agent_id: personalAi.agentId } },
+        { name: 'get_agent_profile', arguments: { agent_id: personalAi.sourceAgentId } },
         undefined,
         { timeout: 30_000 }
       ),
       'get_agent_profile'
     );
     assert.equal(
-      agentProfile.path,
-      `90-System/Personal-AI/AGENTS/${personalAi.agentId}.md`
+      sourceAgentProfile.path,
+      `90-System/Personal-AI/AGENTS/${personalAi.sourceAgentId}.md`
     );
 
     const mountainOverview = parseToolPayload(
@@ -519,6 +529,82 @@ async function runSmoke() {
       sourceHash,
       'immutable copied Markdown source changed during capture'
     );
+
+    const firstServerVersion = client.getServerVersion();
+    await client.close();
+    client = undefined;
+    transport = undefined;
+
+    transport = new StdioClientTransport({
+      command: process.execPath,
+      args: [SERVER_PATH],
+      cwd: PROJECT_ROOT,
+      env: childEnvironment,
+      stderr: 'pipe'
+    });
+    transport.stderr?.on('data', chunk => {
+      serverStderr += chunk.toString();
+    });
+    client = new Client(
+      { name: 'context-canopy-agent-b-codex', version: '1.0.0' },
+      { capabilities: {} }
+    );
+    await client.connect(transport, { timeout: 30_000 });
+    assert.deepEqual(client.getServerVersion(), firstServerVersion);
+
+    const targetCommonRules = parseToolPayload(
+      await client.callTool(
+        { name: 'get_common_rules', arguments: {} },
+        undefined,
+        { timeout: 30_000 }
+      ),
+      'get_common_rules from target agent'
+    );
+    assert.equal(targetCommonRules.sha256, commonRules.sha256);
+
+    const targetAgentProfile = parseToolPayload(
+      await client.callTool(
+        { name: 'get_agent_profile', arguments: { agent_id: personalAi.targetAgentId } },
+        undefined,
+        { timeout: 30_000 }
+      ),
+      'get_agent_profile from target agent'
+    );
+    assert.equal(
+      targetAgentProfile.path,
+      `90-System/Personal-AI/AGENTS/${personalAi.targetAgentId}.md`
+    );
+    assert.notEqual(
+      targetAgentProfile.sha256,
+      sourceAgentProfile.sha256,
+      'source and target Agent profiles must remain independent'
+    );
+
+    const targetSearch = parseToolPayload(
+      await client.callTool(
+        { name: 'search_knowledge', arguments: { query: nonce } },
+        undefined,
+        { timeout: 30_000 }
+      ),
+      'search_knowledge from target agent'
+    );
+    assert.ok(
+      targetSearch.results.some(result => result.path === capture.path),
+      'target Agent could not discover the source Agent capture'
+    );
+
+    const targetReadback = parseToolPayload(
+      await client.callTool(
+        { name: 'get_entry', arguments: { path: capture.path } },
+        undefined,
+        { timeout: 30_000 }
+      ),
+      'get_entry from target agent'
+    );
+    assert.equal(targetReadback.path, capture.path);
+    assert.ok(targetReadback.frontmatter.sources.includes(immutableSource.sourceRef));
+    assert.match(targetReadback.content, new RegExp(nonce));
+
     runCompilerCheck(copiedVault, 'final');
     assert.equal(
       fs.existsSync(path.join(sourceVault, '01-Knowledge', capture.path)),
@@ -535,6 +621,15 @@ async function runSmoke() {
       historical_target: historical.toolPath,
       disposable_card: capture.path,
       reciprocal_paths: capture.reciprocal_paths,
+      cross_agent_handoff: {
+        source_agent: personalAi.sourceAgentId,
+        target_agent: personalAi.targetAgentId,
+        fresh_server_processes: 2,
+        shared_common_rules: true,
+        distinct_agent_profiles: true,
+        entry_found_by_target: true,
+        entry_read_by_target: true
+      },
       manifest_authority_coverage: permissionCoverage,
       personal_ai_authority: personalAi,
       copied_vault_compiler_check: 'passed',

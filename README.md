@@ -7,24 +7,24 @@
 <p><strong>Switch agents. Keep your context.</strong></p>
 
 <p>
-  The portable, local-first context layer for your personal AI:<br />
+  A portable, local-first memory and context layer for personal AI:<br />
   one human, many agents, no memory lock-in.
 </p>
 
 <p>
   <a href="https://github.com/YusenZhang0601/context-canopy/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/YusenZhang0601/context-canopy/actions/workflows/ci.yml/badge.svg" /></a>
+  <a href="https://github.com/YusenZhang0601/context-canopy/releases/latest"><img alt="Release" src="https://img.shields.io/github/v/release/YusenZhang0601/context-canopy" /></a>
   <a href="LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-2ea44f.svg" /></a>
   <a href="https://modelcontextprotocol.io"><img alt="MCP" src="https://img.shields.io/badge/MCP-compatible-6f42c1.svg" /></a>
   <a href="https://obsidian.md"><img alt="Obsidian" src="https://img.shields.io/badge/Obsidian-ready-7c3aed.svg" /></a>
-  <img alt="Portable context" src="https://img.shields.io/badge/context-portable-0ea5e9.svg" />
   <img alt="Local-first" src="https://img.shields.io/badge/authority-local--first-111827.svg" />
 </p>
 
 <p>
-  <a href="#the-switching-tax">Why portability?</a> ·
-  <a href="#how-portability-works">How it works</a> ·
+  <a href="#why-contextcanopy">Why?</a> ·
+  <a href="#proof-not-promise">Proof</a> ·
   <a href="#quick-start">Quick start</a> ·
-  <a href="#what-ships-today">What ships</a> ·
+  <a href="#what-ships-in-v100">Features</a> ·
   <a href="README.zh-CN.md">简体中文</a>
 </p>
 
@@ -32,222 +32,188 @@
 
 ---
 
-## The switching tax
+## Why ContextCanopy?
 
 The better an AI agent remembers you, the harder it becomes to leave.
 
-You teach one tool your preferences, projects, vocabulary, decisions, working style, and long-term goals. Then a stronger agent appears—but moving means starting over. So your accumulated context becomes accidental vendor lock-in.
+Preferences, project history, vocabulary, decisions, working style, and long-term goals accumulate inside chats and provider memory. A better agent appears, but switching means teaching it who you are all over again. Your memory becomes accidental vendor lock-in.
 
-ContextCanopy changes who owns that context.
+**ContextCanopy makes durable context user-owned infrastructure.**
 
-| Without a portable layer | With ContextCanopy |
+| Without it | With ContextCanopy |
 |---|---|
-| Every agent builds a separate, disposable version of you. | Agents read from one user-owned continuity layer. |
-| Switching tools means repeating months of context. | Attach a new host to the same durable authority. |
-| Important memory is hidden in chats, caches, or provider state. | Durable context lives in inspectable Markdown and Git-friendly artifacts. |
-| Sharing memory risks turning agents into identical clones. | Common user context and agent-specific roles remain separate. |
-| “Learning” can silently accumulate contradictions. | Sources, ownership, freshness, checks, and rollback bound each change. |
+| Every agent builds a separate version of you. | Agents meet the same evidence-backed person. |
+| Switching means rebuilding months of context. | A new host attaches to the same portable core. |
+| Memory hides in chats, caches, and provider state. | Durable context is inspectable Markdown. |
+| Shared memory can flatten every agent into one role. | Common context and agent-specific roles stay separate. |
 
-> **ContextCanopy does not move a model's hidden mind. It moves the durable context that should belong to you.**
-
-Persistent memory, bounded learning, and agent evolution still matter. Portability is the organizing promise: your AI tools can change without taking your accumulated self-knowledge with them.
+> ContextCanopy does not move a model's hidden mind. It moves the durable context that should belong to you.
 
 ## How portability works
 
 ```text
-  Claude memory · Chat exports · project rules · notes · research · decisions
-                                  │
-                         Capture / Learn / Distill
-                                  │
-                 ┌────────────────▼────────────────┐
-                 │      CONTEXTCANOPY CORE         │
-                 │ identity · preferences · rules │
-                 │ knowledge · goals · evidence   │
-                 │ skills · provenance · history  │
-                 └───────┬─────────┬─────────┬─────┘
-                         │         │         │
-                  Attach + Sync    │    Attach + Sync
-                         │         │         │
-                      Claude     Codex    future agent
-                    own role    own role     own role
+ chats · exports · notes · research · decisions
+                       │
+              Capture / Learn / Distill
+                       │
+           ┌───────────▼───────────┐
+           │  CONTEXTCANOPY CORE   │
+           │ identity · knowledge │
+           │ goals · rules · proof│
+           └──────┬────────┬───────┘
+                  │        │
+            Attach + Sync  │
+                  │        │
+               Claude    Codex    future agents
+               own role  own role  own role
 ```
 
-The portable core is not a giant prompt. It is a small governed system with three layers:
+The core has three explicit layers:
 
-1. **Evidence** — immutable source material such as conversations, papers, manuals, and exports.
-2. **Canonical context** — atomic Markdown knowledge, insights, personal context, and long-term “mountains,” each with one owner and traceable sources.
-3. **Host projections** — common user rules plus a distinct role for each agent, installed through host-native Skills and a thin MCP bridge.
+1. **Evidence** — immutable source material: conversations, papers, manuals, and exports.
+2. **Canonical context** — atomic knowledge, preferences, decisions, and long-term directions with one owner, sources, relations, and honest freshness.
+3. **Host projections** — shared user rules plus a distinct role for each agent, delivered through Agent Skills and a thin local MCP bridge.
 
-### A concrete handoff
+It is closer to a **passport for your context** than a giant system prompt: portable identity and history, with each agent retaining its own job.
 
-Suppose Claude has learned how you review scientific evidence, but you now want Codex to implement the next experiment.
+## Proof, not promise
 
-1. Preserve the selected conversation or rule as evidence.
-2. Distill the durable method into the canonical ContextCanopy core.
-3. Attach Codex and sync the common rules plus Codex's own execution role.
-4. Run Doctor in a fresh session to prove Codex loaded the authority rather than guessing from old chat context.
+`npm run smoke` copies the seed Vault, starts one fresh MCP process as Claude, captures a disposable knowledge card, shuts that process down, then starts a second process as Codex. Codex must load the same common rules, keep a different role, discover the card, and read it back. The compiler runs before and after, and SHA-256 guards prove the original Vault stayed byte-identical.
 
-Claude keeps its own role. Codex keeps its own role. Both recognize the same person and the same evidence-backed method.
+```json
+{
+  "success": true,
+  "cross_agent_handoff": {
+    "source_agent": "claude",
+    "target_agent": "codex",
+    "fresh_server_processes": 2,
+    "shared_common_rules": true,
+    "distinct_agent_profiles": true,
+    "entry_found_by_target": true,
+    "entry_read_by_target": true
+  },
+  "copied_vault_compiler_check": "passed",
+  "live_vault_unchanged": true,
+  "temporary_copy_removed": true
+}
+```
 
-### What moves—and what does not
-
-| Portable by design | Deliberately not claimed as portable |
-|---|---|
-| Preferences, terminology, collaboration rules | Model weights or hidden provider internals |
-| Canonical knowledge, decisions, and provenance | Credentials, permissions, or secret values |
-| Long-term goals and evidence-backed progress | An active chat's transient runtime state |
-| Selected conversation learning and project experience | Memory a provider does not expose or export |
-| Reusable Skills and host-specific role definitions | Host UI settings unless an adapter explicitly supports them |
-
-## More than “longer memory”
-
-| Capability | What it means here |
-|---|---|
-| 🔄 **Portable continuity** | Replace or add agents without rebuilding durable user context from zero. |
-| 🌱 **Bounded learning** | Agents can adopt evidence-backed lessons without silently rewriting identity, permission, or privacy boundaries. |
-| 🧭 **One human, distinct agents** | Shared context is common; each agent's responsibilities and strengths remain independent. |
-| 🔎 **Evidence before confidence** | Raw sources stay separate from conclusions, and every durable claim can point back to evidence. |
-| 🕸️ **Compiled knowledge graph** | Atomic Markdown owners, typed relations, freshness, backlinks, and deterministic derived views replace a pile of chat chunks. |
-| 🛡️ **Local authority** | No required hosted memory service, proprietary database, background daemon, or external inference API. |
-| ↩️ **Reversible writes** | Canonical writes share one transaction boundary with relation updates, compilation, final checks, and rollback. |
-| 🧰 **Host-native operation** | Skills define judgment and workflows; MCP exposes a narrow, allowlisted data plane. |
-
-## Where it fits
-
-ContextCanopy is adjacent to several valuable project categories, but its center of gravity is different.
-
-| Category | Typical strength | ContextCanopy's focus |
-|---|---|---|
-| Built-in provider memory | Frictionless inside one product | User-owned context that can outlive that product |
-| Vector-memory services | Fast semantic recall for applications | Human-readable authority, provenance, and governance |
-| Cross-agent Markdown memory | Shared facts and project recall | A whole personal AI substrate: identity, rules, goals, evidence, roles, and Skills |
-| Stateful agent platforms | Long-running agents with internal state | Continuity across independent agents and vendors |
-| Obsidian / LifeOS templates | Personal organization and dashboards | An Agent-operable, compiled context layer rather than a life-planning UI |
-
-### Related projects worth studying
-
-- [Basic Memory](https://github.com/basicmachines-co/basic-memory) pairs local Markdown with a knowledge graph and broad MCP access.
-- [AgentCairn](https://github.com/ccf/agentcairn), [Dory](https://github.com/deeflect/dory), and [Memorix](https://github.com/AVIDS2/memorix) tackle shared memory across coding agents with different storage and retrieval contracts.
-- [EIDARA](https://github.com/jrotllant/eidara) explores compiled Markdown memory, while the draft [Agent Memory Protocol](https://github.com/agentmemoryprotocol/agentmemoryprotocol) explores a portable interchange standard.
-- [Mem0](https://github.com/mem0ai/mem0), [Graphiti](https://github.com/getzep/graphiti), and [Letta](https://github.com/letta-ai/letta) are strong references for application memory, temporal graphs, and stateful agents.
-
-ContextCanopy does not claim that nobody else works on portability. Its specific bet is that migration must carry **the human's governed context**, not only retrieved facts, while preserving the differences between agents.
-
-The project also draws inspiration from [Andrej Karpathy's LLM Wiki idea](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) and the broader personal-AI ambition in projects such as [LifeOS](https://github.com/danielmiessler/LifeOS).
+This proves the portable core across isolated local client lifecycles. It does **not** claim universal import from closed provider-native memory.
 
 ## Quick start
 
 ### Requirements
 
-- Node.js 18 or newer
-- Python 3.9 or newer with PyYAML (`python3 -m pip install pyyaml`)
+- Node.js 18+
+- Python 3.10+ with PyYAML (`python3 -m pip install pyyaml`)
+- GitHub CLI for the recommended private-template bootstrap
 - Obsidian is optional; any Markdown editor works
 
-### 1. Clone and verify
+### 1. Create a safe personal authority
+
+Do this **before** adding personal information. The recommended path creates a separate private repository and clones it as your only writable `origin`:
+
+```bash
+gh repo create my-context-canopy +  --private +  --template YusenZhang0601/context-canopy +  --clone
+cd my-context-canopy
+git remote add upstream https://github.com/YusenZhang0601/context-canopy.git
+
+gh repo view --json nameWithOwner,visibility
+git remote -v
+```
+
+Confirm that `visibility` is `PRIVATE` and that `origin` points to your private repository. You can also use GitHub's **Use this template** button and select **Private**.
+
+For a local-only setup, disable public pushes explicitly:
 
 ```bash
 git clone https://github.com/YusenZhang0601/context-canopy.git
 cd context-canopy
+git remote rename origin upstream
+git remote set-url --push upstream DISABLED
+git remote -v
+```
 
+Never use a public fork as a personal Vault.
+
+### 2. Install and verify
+
+```bash
+python3 -m pip install pyyaml
 npm ci --prefix mcp
 npm test
 npm run smoke
 ```
 
-### 2. Choose where personal authority lives
+The v1.0.0 MCP package is installed from this repository's `mcp/` source; it is not advertised as an npm-published package.
 
-Before adding real personal context, choose one mode:
+### 3. Attach an agent
 
-- **Local-only** — personal commits and backups stay on your devices; nothing personal is pushed.
-- **Private-remote** — the public repository is a read-only `upstream`; a separate repository, verified private, is the only writable `origin`.
-
-Never use a public fork as your personal vault.
-
-### 3. Let an agent attach the host
-
-Open the repository root in a compatible agent and give it this prompt:
+Open the repository root in a compatible agent and send:
 
 ```text
 Read AGENTS.md and skills/second-brain-attach/SKILL.md, then attach this host to ContextCanopy.
-Before writing personal information, ask me to choose local-only or private-remote authority.
+Do not write personal information until the private or local-only authority is verified.
 Install the bundled Skills, configure the local MCP server, run the documented checks,
-and report only what was actually verified. Finish with a fresh-session Doctor check.
+and finish with a fresh-session Doctor check. Report only what was actually verified.
 ```
 
-The root contract routes the Agent to the correct Vault or MCP instructions. The Agent must discover the host's real Skill syntax—for example, Codex uses `$skill-name` or the `/skills` picker rather than pretending every host supports literal slash commands.
+## What ships in v1.0.0
 
-## What ships today
-
-### Portability status
-
-| Surface | Status |
+| Capability | Included |
 |---|---|
-| User-owned Markdown authority shared across hosts | ✅ Included |
-| Attach, Sync, Learn, Distill, Doctor, and long-term direction workflows | ✅ Included as Agent Skills |
-| Selected conversation/archive migration | ✅ Agent-guided; requires an accessible export or source |
-| Codex, Claude, AntiGravity, and Hermes role contracts | ✅ Included; each real host still requires fresh-session verification |
-| Read/capture access from a generic MCP client | ✅ Protocol surface included; lifecycle integration is host-dependent |
-| One-click import from every provider's native memory | 🧭 Roadmap; not currently claimed |
+| Portable continuity | User-owned Markdown authority shared across independent agents |
+| Bounded learning | Evidence-backed Learn and Distill workflows with protected identity, privacy, and permission boundaries |
+| Distinct agents | Shared user rules plus separate Claude, Codex, AntiGravity, and Hermes roles |
+| Compiled knowledge graph | Atomic owners, typed relations, freshness, backlinks, provenance, and deterministic views |
+| Local MCP bridge | 9 allowlisted tools for knowledge, personal-AI authority, and Skill discovery |
+| Agent workflows | 8 Skills for capture, attach, sync, learn, distill, climb, doctor, and help |
+| Reversible capture | Canonical writes, reciprocal links, review records, compilation, and rollback in one transaction |
+| Isolated migration proof | Reproducible Claude → ContextCanopy → Codex two-process smoke |
 
-This distinction matters: ContextCanopy already prevents new durable context from becoming vendor-owned and supports evidence-preserving guided migration. Automated adapters for closed provider memory formats are the next portability frontier.
+<details>
+<summary><strong>Show the 8 Skills and 9 MCP tools</strong></summary>
 
-### Eight Agent Skills
+**Skills:** `capture-knowledge`, `second-brain-attach`, `second-brain-sync`, `second-brain-learn`, `second-brain-distill`, `second-brain-climb`, `second-brain-doctor`, `second-brain-help`.
 
-| Skill | Purpose |
+**MCP tools:** `search_knowledge`, `get_entry`, `list_entries`, `capture_from_conversation`, `get_common_rules`, `get_agent_profile`, `get_mountain_context`, `list_second_brain_skills`, `read_second_brain_skill`.
+
+</details>
+
+### What moves—and what does not
+
+| Portable by design | Not claimed as portable |
 |---|---|
-| `capture-knowledge` | Preserve a source, then create or update one atomic canonical topic. |
-| `second-brain-attach` | Attach a new, reinstalled, or reset Agent host. |
-| `second-brain-sync` | Reconcile common rules while preserving an Agent's distinct role. |
-| `second-brain-learn` | Adopt reusable lessons from the current work trace. |
-| `second-brain-distill` | Extract durable value from selected conversation archives. |
-| `second-brain-climb` | Maintain evidence-backed long-term direction models. |
-| `second-brain-doctor` | Diagnose installation, authority, and drift read-only. |
-| `second-brain-help` | Explain the system and route a request to the smallest correct Skill. |
+| Preferences, terminology, rules, and agent roles | Model weights or hidden provider internals |
+| Canonical knowledge, decisions, and provenance | Credentials, permissions, or secrets |
+| Long-term goals and evidence-backed progress | A live chat's transient runtime state |
+| Accessible exports, selected conversations, and notes | Memory a provider does not expose |
+| Reusable Skills and host projections | Unsupported host UI settings |
 
-### Nine MCP tools
+## Where it fits
 
-- **Knowledge:** `search_knowledge`, `get_entry`, `list_entries`, `capture_from_conversation`
-- **Personal AI authority:** `get_common_rules`, `get_agent_profile`, `get_mountain_context`
-- **Skill discovery:** `list_second_brain_skills`, `read_second_brain_skill`
+ContextCanopy is not trying to be another hosted vector-memory API or a LifeOS dashboard. Its center is **migration of a person's governed context across independent agents**.
 
-The MCP server exposes fixed roots rather than arbitrary filesystem access. It rejects traversal and escaping symlinks. Semantic judgment remains in Skills and the current Agent; the server does not call an external model or become a second authority.
+| Adjacent category | ContextCanopy's distinction |
+|---|---|
+| Provider memory | User-owned context that can outlive one product |
+| Vector / graph memory | Human-readable authority and evidence, not only retrieval |
+| Cross-agent coding memory | Personal continuity beyond project facts |
+| Stateful agent platforms | Continuity across agents rather than one agent's internal state |
+| Obsidian / LifeOS templates | Agent-operable context substrate rather than a planning UI |
 
-### Compiled vault governance
+See the dated [project landscape](docs/landscape.md) for comparisons with Basic Memory, AgentCairn, Memorix, AMP, Mem0, Graphiti, Letta, LifeOS, and related work.
 
-The bundled compiler verifies:
-
-- required metadata and honest freshness;
-- unique canonical ownership and atomic scope;
-- unresolved, ambiguous, self, inbound, and outbound links;
-- graph connectivity and orphan nodes;
-- source coverage, backlinks, and content hashes;
-- deterministic `INDEX.md` and `SOURCE-COVERAGE.md` views;
-- atomicity review records for changed canonical pages.
-
-## Repository map
-
-```text
-context-canopy/
-├── AGENTS.md       # public root entry and privacy boundary
-├── vault/          # Obsidian-compatible evidence + canonical context graph
-├── mcp/            # local stdio MCP server + transactional writer
-├── skills/         # eight portable Agent Skills
-├── docs/assets/    # TonyRainforest brand assets
-└── .github/        # CI, security, and contribution surfaces
-```
-
-The public repository is a clean distribution template. Your personalized Vault becomes its own authority and should remain local or use a separate private remote.
-
-## Validation you can run
+## Validation
 
 ```bash
-# Vault compiler + linter + MCP test suite
+# Vault compiler, linter, and MCP tests
 npm test
 
-# Copy the full seed Vault, exercise MCP over stdio, prove the original stayed byte-identical
+# Two-process cross-agent handoff on a disposable full-Vault copy
 npm run smoke
 
-# Package and dependency checks
+# Package and dependency hygiene
 cd mcp
 node --check index.js
 node --check lib/vault-writer.js
@@ -255,54 +221,24 @@ npm pack --dry-run
 npm audit --audit-level=low
 ```
 
-Tests operate on temporary copies and must not mutate a live personalized Vault. CI runs the same core suite on every push and pull request.
+CI runs at the declared minimums: Node.js 18 and Python 3.10.
 
-## Honest limits and roadmap
+## Honest limits
 
-- **Import adapters:** add preview-first importers for provider exports and native memory files, preserving source identity and supersession history.
-- **Host evidence:** publish a versioned compatibility matrix based on real fresh-host installation evidence, not configuration-file presence.
-- **Migration fixtures:** add reproducible Agent A → ContextCanopy → Agent B acceptance scenarios.
-- **Retrieval scale:** keep the Markdown graph canonical while allowing optional, disposable indexes for larger Vaults.
-
-ContextCanopy is plaintext by design, not encrypted storage. Local-first reduces exposure; it does not replace filesystem permissions, encrypted backups, secret hygiene, or careful remote configuration.
-
-## FAQ
-
-<details>
-<summary><strong>Is this another vector database?</strong></summary>
-
-No. Retrieval can be added, but the durable authority is compiled Markdown with sources, ownership, relations, and freshness. A future index must remain disposable.
-</details>
-
-<details>
-<summary><strong>Does every Agent become the same Agent?</strong></summary>
-
-No. Common user context and Agent-specific roles have separate owners. Sharing who you are should not erase what each Agent is good at.
-</details>
-
-<details>
-<summary><strong>Can it automatically import all of my ChatGPT or Claude memory today?</strong></summary>
-
-Not as a universal one-click importer. Today, accessible conversations, exports, rules, and notes can be preserved and distilled through the guided workflow. Native provider adapters are roadmap work.
-</details>
-
-<details>
-<summary><strong>Why not just keep one long system prompt?</strong></summary>
-
-Because a prompt does not provide provenance, unique ownership, atomic updates, freshness, graph integrity, rollback, or a safe separation between common context and Agent roles.
-</details>
+- Historical migration is guided and source-preserving; universal one-click provider import is not included.
+- Every real host still needs its own fresh-session attachment proof.
+- The canonical layer is plaintext, not encrypted storage. Use private remotes, filesystem permissions, encrypted backups, and secret hygiene.
+- Search is intentionally simple in v1.0.0. Optional disposable indexes may be added later without replacing Markdown authority.
 
 ## Project name and compatibility
 
-**ContextCanopy** is the public brand. The v1 release keeps the existing `second-brain-*` Skill IDs, MCP configuration key, and `SECOND_BRAIN_*` environment variables as compatibility namespaces. They will not be renamed casually without a migration path.
+**ContextCanopy** is the public brand. The v1 line retains `second-brain-*` Skill IDs and `SECOND_BRAIN_*` environment variables as compatibility namespaces.
 
 ## Contributing
 
-The most valuable contributions now are import adapters, host recipes backed by fresh-session evidence, migration fixtures, adversarial filesystem tests, and clearer onboarding.
+The most useful contributions are preview-first import adapters, fresh-host recipes, migration fixtures, adversarial filesystem tests, and simpler onboarding.
 
-If memory lock-in has ever stopped you from trying a better Agent, [tell us which context source you need to move first](https://github.com/YusenZhang0601/context-canopy/issues/new?template=feature_request.yml). If this direction resonates, a ⭐ helps other people discover a user-owned alternative.
-
-Read [CONTRIBUTING.md](CONTRIBUTING.md), follow the [Code of Conduct](CODE_OF_CONDUCT.md), and report vulnerabilities through [SECURITY.md](SECURITY.md). Feature requests and design discussions are welcome in [GitHub Issues](https://github.com/YusenZhang0601/context-canopy/issues).
+If memory lock-in has stopped you from trying a better agent, [tell us which context source should move first](https://github.com/YusenZhang0601/context-canopy/issues/new?template=feature_request.yml). Read [CONTRIBUTING.md](CONTRIBUTING.md), follow the [Code of Conduct](CODE_OF_CONDUCT.md), and report vulnerabilities through [SECURITY.md](SECURITY.md).
 
 ## License
 
