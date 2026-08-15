@@ -1,6 +1,6 @@
 {
   "name": "context-canopy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "ContextCanopy",
   "description": "Portable personal AI context: search and capture knowledge, then read allowlisted user authority across agents",
   "author": "TonyRainforest",
