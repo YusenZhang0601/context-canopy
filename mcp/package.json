@@ -1,6 +1,6 @@
 {
   "name": "context-canopy-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Thin local MCP bridge for portable ContextCanopy knowledge and personal AI authority",
   "type": "module",
   "main": "index.js",

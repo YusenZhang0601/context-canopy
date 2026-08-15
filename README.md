@@ -24,7 +24,7 @@
   <a href="#why-contextcanopy">Why?</a> ·
   <a href="#proof-not-promise">Proof</a> ·
   <a href="#quick-start">Quick start</a> ·
-  <a href="#what-ships-in-v100">Features</a> ·
+  <a href="#what-ships-in-v101">Features</a> ·
   <a href="README.zh-CN.md">简体中文</a>
 </p>
 
@@ -114,7 +114,7 @@ This proves the portable core across isolated local client lifecycles. It does *
 Do this **before** adding personal information. The recommended path creates a separate private repository and clones it as your only writable `origin`:
 
 ```bash
-gh repo create my-context-canopy +  --private +  --template YusenZhang0601/context-canopy +  --clone
+gh repo create my-context-canopy --private --template YusenZhang0601/context-canopy --clone
 cd my-context-canopy
 git remote add upstream https://github.com/YusenZhang0601/context-canopy.git
 
@@ -145,7 +145,7 @@ npm test
 npm run smoke
 ```
 
-The v1.0.0 MCP package is installed from this repository's `mcp/` source; it is not advertised as an npm-published package.
+The v1.0.1 MCP package is installed from this repository's `mcp/` source; it is not advertised as an npm-published package.
 
 ### 3. Attach an agent
 
@@ -158,7 +158,7 @@ Install the bundled Skills, configure the local MCP server, run the documented c
 and finish with a fresh-session Doctor check. Report only what was actually verified.
 ```
 
-## What ships in v1.0.0
+## What ships in v1.0.1
 
 | Capability | Included |
 |---|---|
@@ -228,7 +228,7 @@ CI runs at the declared minimums: Node.js 18 and Python 3.10.
 - Historical migration is guided and source-preserving; universal one-click provider import is not included.
 - Every real host still needs its own fresh-session attachment proof.
 - The canonical layer is plaintext, not encrypted storage. Use private remotes, filesystem permissions, encrypted backups, and secret hygiene.
-- Search is intentionally simple in v1.0.0. Optional disposable indexes may be added later without replacing Markdown authority.
+- Search is intentionally simple in v1.0.1. Optional disposable indexes may be added later without replacing Markdown authority.
 
 ## Project name and compatibility
 

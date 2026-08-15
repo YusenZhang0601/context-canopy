@@ -2,6 +2,13 @@
 
 All notable changes to ContextCanopy are documented here.
 
+## [1.0.1] - 2026-08-15
+
+### Fixed
+
+- Corrected the private-template bootstrap command so it can be copied directly from the rendered README.
+- Refreshed the official GitHub Actions to their current Node 24 runtime releases while preserving project tests at Node.js 18 and Python 3.10.
+
 ## [1.0.0] - 2026-08-15
 
 ### Portable Core
@@ -21,4 +28,5 @@ All notable changes to ContextCanopy are documented here.
 - The `context-canopy-mcp` package ships as repository source and a GitHub Release artifact; v1.0.0 does not claim npm publication.
 - ContextCanopy stores plaintext files and relies on private remotes, filesystem permissions, encrypted backups, and secret hygiene for confidentiality.
 
+[1.0.1]: https://github.com/YusenZhang0601/context-canopy/releases/tag/v1.0.1
 [1.0.0]: https://github.com/YusenZhang0601/context-canopy/releases/tag/v1.0.0
