@@ -24,6 +24,19 @@
         "检查旧 Hermes memory 或 maintenance Skill 是否竞争 authority",
         "每个 PASS 都有当前可复核证据"
       ]
+    },
+    {
+      "id": 3,
+      "prompt": "这台 Agent 的 common/profile hash 都一致，七个 Skill 也齐，但 profile 复制了 common 的反虚热规则，活动规则里还留着一条已被纠正的 200 行上限，上次 Learn 也只测了新规则复述。它算健康吗？只诊断。",
+      "expected_output": "Agent 不因 hash 和安装完整就判 HEALTHY；把跨 owner 同义正文、已被替代仍在活动链的旧规则，以及缺少旧行为退出测试分别标为 DRIFT 或 UNKNOWN，并路由到 Sync/Learn 修复，不执行写入。",
+      "files": [],
+      "expectations": [
+        "检查活动规则质量而非只检查文件存在与 hash",
+        "同义正文跨 common/profile 重复被识别为 owner 漂移",
+        "已被替代的旧规则仍注入时不能 PASS",
+        "只有正向复述、没有负向旧行为退出测试时不能完成验收",
+        "不以任意行数或字节阈值判定文件健康"
+      ]
     }
   ]
 }

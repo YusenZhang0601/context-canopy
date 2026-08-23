@@ -8,6 +8,7 @@ This repository is the public ContextCanopy distribution. It is not a user's per
 - For Vault reads or writes, work from `vault/` and read `vault/AGENTS.md` completely before acting.
 - For MCP code or tests, work from `mcp/` and read `mcp/AGENTS.md` completely before acting.
 - For documentation changes, keep `README.md` and `README.zh-CN.md` semantically aligned. Do not translate code, paths, commands, or compatibility identifiers.
+- The installable `skills/second-brain-*` directories and their `vault/90-System/Personal-AI/SKILLS/` mirrors express the same public contract. Update both and verify byte equality; do not let them become competing owners.
 
 ## Privacy and authority boundary
 
@@ -21,6 +22,7 @@ This repository is the public ContextCanopy distribution. It is not a user's per
 - ContextCanopy moves user-owned durable context, Skills, and host projections. It does not move model weights, hidden provider memory, credentials, permissions, or active runtime state.
 - Selected accessible conversations and exports can be migrated through the guided Distill workflow. Do not claim a universal one-click provider-memory importer unless one has been implemented and verified.
 - Configuration-file presence is not installation proof. Attach and Sync complete only after the target host passes a fresh-session Doctor check.
+- Active rule files express the current effective state, not an append-only learning log. Preserve superseded evidence in Git and release history, remove retired behavior from active templates, and verify both the new behavior and the old behavior's exit.
 
 ## Completion evidence
 

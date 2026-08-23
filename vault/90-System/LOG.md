@@ -7,6 +7,17 @@ tags:
 
 # Log
 
+## [2026-08-23] governance | Learn 活动规则净优化进入公开模板
+
+- 将 Learn 从只追加经验改为显式状态转换：`add`、`reinforce/no-op`、`correct`、`narrow`、`broaden`、`replace`、`merge`、`relocate` 或 `retire`；新证据必须按 authority、范围与证明强度审计，不能只凭时间覆盖旧证据。
+- 项目级学习必须进入项目唯一 owner 和真实自动注入入口；被替代正文退出活动投影，历史保留在 Git、LOG、receipt 或不可变来源。
+- Sync 同步清理失效投影；Doctor 新增重复 owner、旧规则残留、tombstone、任意体积阈值与缺少负向退出测试的诊断。
+- 公开模板继续保持 `local-only` / `private-remote`、公开 Release 只读、隐私、权限与凭据边界；没有复制任何私有 Vault 规则、个人画像或项目事实。
+
+**状态**: ⏳ 等待 Skill 双镜像、行为 eval、全量 Release 门禁、公开 PR 与 v1.0.2 新鲜克隆验收
+
+**状态更新（2026-08-23）**: ✅ Release 候选已完成 16 个 Skill 包校验、Vault compiler/lint/graph、27 项 compiler 单测、24 项 MCP 单测、隔离 full-Vault stdio smoke、Node syntax、MCP 1.0.2 dry-run 打包与 `npm audit`；七个 installable/Vault Skill 镜像均字节一致。全新 Vault cwd 的直接注入实验输出 `RELEASE_ACTIVE_RULE_NET_OPT_PASS`，实际读取 Release Learn Skill 的独立只读评估也正确选择 `correct/replace`、唯一 `AGENTS.md` owner、`CLAUDE.md` 薄导入和正负向 fresh-session 验收。变更 diff 未命中凭据形状或私有绝对路径；全树唯一 secret-shape 命中来自 compiler 的合成秘密拒绝测试，未安装 gitleaks，因此不声称完成 gitleaks 扫描。等待公开 PR、远端 CI、tag、Release asset 与 tag 新鲜克隆复验。
+
 ## [2026-08-15] release | ContextCanopy 公开仓库完成发布
 
 - 公开仓库已发布至 `https://github.com/YusenZhang0601/context-canopy`，默认分支为 `main`，仓库保持 public，并启用 Template repository 属性。

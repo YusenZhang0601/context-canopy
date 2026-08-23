@@ -2,6 +2,16 @@
 
 All notable changes to ContextCanopy are documented here.
 
+## [1.0.2] - 2026-08-23
+
+### Changed
+
+- Changed Learn from append-only accumulation to explicit active-rule transitions: add, no-op, correct, narrow, broaden, replace, merge, relocate, or retire.
+- Required project-level learning to reach the project's real automatically injected instruction surface instead of stopping at a canonical note or pointer.
+- Added paired fresh-session acceptance so corrected rules must prove both the new behavior and the superseded behavior's exit.
+- Added Doctor checks for duplicate owners, stale active rules, tombstones, arbitrary size caps, and incomplete projection updates.
+- Kept public/private authority, privacy, permission, and `local-only` / `private-remote` boundaries unchanged.
+
 ## [1.0.1] - 2026-08-15
 
 ### Fixed
@@ -28,5 +38,6 @@ All notable changes to ContextCanopy are documented here.
 - The `context-canopy-mcp` package ships as repository source and a GitHub Release artifact; v1.0.0 does not claim npm publication.
 - ContextCanopy stores plaintext files and relies on private remotes, filesystem permissions, encrypted backups, and secret hygiene for confidentiality.
 
+[1.0.2]: https://github.com/YusenZhang0601/context-canopy/releases/tag/v1.0.2
 [1.0.1]: https://github.com/YusenZhang0601/context-canopy/releases/tag/v1.0.1
 [1.0.0]: https://github.com/YusenZhang0601/context-canopy/releases/tag/v1.0.0

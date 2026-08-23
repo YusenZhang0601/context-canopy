@@ -145,7 +145,7 @@ npm test
 npm run smoke
 ```
 
-The v1.0.1 MCP package is installed from this repository's `mcp/` source; it is not advertised as an npm-published package.
+The v1.0.2 MCP package is installed from this repository's `mcp/` source; it is not advertised as an npm-published package.
 
 ### 3. Attach an agent
 
@@ -158,12 +158,12 @@ Install the bundled Skills, configure the local MCP server, run the documented c
 and finish with a fresh-session Doctor check. Report only what was actually verified.
 ```
 
-## What ships in v1.0.1
+## What ships in v1.0.2
 
 | Capability | Included |
 |---|---|
 | Portable continuity | User-owned Markdown authority shared across independent agents |
-| Bounded learning | Evidence-backed Learn and Distill workflows with protected identity, privacy, and permission boundaries |
+| Corrective learning | Evidence-backed Learn can add, correct, narrow, replace, merge, relocate, or retire active rules while preserving identity, privacy, and permission boundaries |
 | Distinct agents | Shared user rules plus separate Claude, Codex, AntiGravity, and Hermes roles |
 | Compiled knowledge graph | Atomic owners, typed relations, freshness, backlinks, provenance, and deterministic views |
 | Local MCP bridge | 9 allowlisted tools for knowledge, personal-AI authority, and Skill discovery |
@@ -228,7 +228,7 @@ CI runs at the declared minimums: Node.js 18 and Python 3.10.
 - Historical migration is guided and source-preserving; universal one-click provider import is not included.
 - Every real host still needs its own fresh-session attachment proof.
 - The canonical layer is plaintext, not encrypted storage. Use private remotes, filesystem permissions, encrypted backups, and secret hygiene.
-- Search is intentionally simple in v1.0.1. Optional disposable indexes may be added later without replacing Markdown authority.
+- Search is intentionally simple in v1.0.2. Optional disposable indexes may be added later without replacing Markdown authority.
 
 ## Project name and compatibility
 

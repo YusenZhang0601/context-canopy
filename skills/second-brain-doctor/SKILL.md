@@ -70,7 +70,17 @@ metadata:
 
 验证 MCP 版本、Vault root、allowlist 越界拒绝、读取内容与 authority SHA。MCP 不应成为语义裁决器，不应调用外部推理 API、持有独立数据库或启动守护进程。只握手成功但无法读取 owner 应标为 `DRIFT` 或 `BLOCKED`。
 
-### 5. 身份注入
+### 5. 活动规则质量
+
+把 COMMON、当前 Agent profile、受影响 Skill 和项目实际注入入口作为一个活动规则集审计：
+
+- 每项行为是否只有一个正确 owner；common、profile、Skill 与项目文件之间的同义正文应标为 `DRIFT`，必要的短投影不算第二 owner。
+- 是否仍有被较强证据纠错、缩限、替代、迁移或退役的旧规则留在活动注入链；历史只应由 Git、LOG、receipt 或不可变来源承担。
+- 是否存在只增不减的日期流水、tombstone、失效兼容正文或可无损合并的重复规则。长度只触发语义审查，不单独决定状态；除非有可验证宿主限制，不使用任意行数或字节上限判定健康。
+- 最近一次 Learn/Sync 是否记录了转换类型、旧/新预期行为、同步目标，以及正向新行为和负向旧行为退出证据。
+- 项目级规则是否进入该项目真正自动加载的 `AGENTS.md`、`CLAUDE.md`、`GEMINI.md` 或既有受管投影；只写 canonical、MCP 可读或自然语言指针不能证明项目行为已注入。
+
+### 6. 身份注入
 
 读取宿主官方全局身份表面，只审计 Second Brain 管理块：
 
@@ -83,7 +93,7 @@ metadata:
 
 检查旧 `learn-from-conversations`、SkillOpt/Sleep、旧 second-brain 插件或宿主 memory 是否仍在竞争写入。兼容入口可以存在，但必须薄重定向到 `second-brain-learn`；旧程序不得自动运行。
 
-### 6. Git authority 边界
+### 7. Git authority 边界
 
 只读检查：
 
@@ -97,7 +107,7 @@ metadata:
 
 网络或认证不可用时标 `UNKNOWN/BLOCKED`，不要把本地 remote URL 当作远端隐私的证明；local-only 不因缺少 GitHub 账号而降级。
 
-### 7. Fresh-session 行为
+### 8. Fresh-session 行为
 
 Attach 或 Sync 的完成门禁要求一个全新宿主会话。若当前就是专门启动的验收会话，验证它能：
 
@@ -106,10 +116,13 @@ Attach 或 Sync 的完成门禁要求一个全新宿主会话。若当前就是�
 3. 通过 MCP 读取 common/profile，而不是靠旧上下文背答案。
 4. 将学习路由到 `second-brain-learn`，将历史批量清理路由到 `second-brain-distill`。
 5. 不把缓存、SkillOpt 或某个厂商 Agent 当成长期“我”。
+6. 对最近发生 `correct`、`narrow`、`replace`、`merge`、`relocate` 或 `retire` 的规则，在配对反例中选择新规则，并且不再复现已退出的旧行为；项目规则必须从对应项目 cwd 验证。
 
 当前会话不是 fresh session 时，不要自证通过；把该项标 `UNKNOWN` 并给出宿主原生的新会话测试动作。
 
-### 8. 秘密与权限卫生
+Attach、Sync 或 Learn 的 receipt 只有在适用宿主的新会话检查完成后才能记录 `completed`。规则转换只通过正向复述而没有旧行为退出测试时仍是 `DRIFT` 或 `UNKNOWN`。旧会话自述、静态投影存在、MCP 可读或旧 receipt 均不能替代当前 fresh-session 证据。
+
+### 9. 秘密与权限卫生
 
 检查配置权限和 Git tracked 内容是否可能泄露 token、密码、私钥或个人敏感原件。扫描结果只报告路径、类型和计数，不打印匹配值。凭据轮换是外部账号变化；除非用户明确授权，本 Skill 只报告应轮换的系统，不执行轮换。
 

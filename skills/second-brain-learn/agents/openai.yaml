@@ -1,4 +1,4 @@
 interface:
   display_name: "Second Brain - Learn（沉淀当前经验）"
-  short_description: "从当前对话提炼长期偏好、经验、规则、知识和方向进展"
-  default_prompt: "使用 $second-brain-learn 从当前对话提炼并沉淀值得长期保留的经验。"
+  short_description: "从当前对话提炼、纠错并优化长期规则、知识与方向进展"
+  default_prompt: "使用 $second-brain-learn 从当前对话维护当前有效的长期经验与规则，必要时纠错、替代或退役旧内容。"
