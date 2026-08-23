@@ -166,4 +166,6 @@ python3 90-System/scripts/audit_graph_semantics.py --format json
 ## AGENTS 自维护
 
 - 本文件保持“薄入口”：只保留身份、路由、hard invariant 和门禁；细节回到 SCHEMA、ONTOLOGY、WORKFLOWS。
-- 修改后必须在全新 Agent 会话中验证。
+- 本文件与项目内其他自动注入指令面表达的是“当前有效规则集”，不是学习日志。新证据修正旧规则时，必须在唯一 owner 中执行替代、缩限、合并、迁移或退役，并同步实际注入投影；历史依据留在 Git、LOG 或不可变来源中，不把已失效正文继续堆在活动文件里。
+- 除非宿主或项目已有可验证的硬限制，不为项目级 `AGENTS.md`、`CLAUDE.md`、`GEMINI.md` 等活动指令文件设任意行数或字节上限；通过去重、纠错、压缩和迁移保持高信息密度，不能为了压缩指标删掉仍有效的独特规则。
+- 修改后必须在以 Vault 为 cwd 的全新 Agent 会话中同时验证新规则生效，以及已被替代或退役的旧行为不再主导。

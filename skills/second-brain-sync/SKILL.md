@@ -51,12 +51,15 @@ metadata:
 
 每个候选保留来源位置、原文或可核验摘要、风险级别和目标 owner。
 
+同时标注相对活动规则的主要转换：`add`、`reinforce/no-op`、`correct`、`narrow`、`broaden`、`replace`、`merge`、`relocate` 或 `retire`。同步不是只把新文本向前复制；被替代、迁移或退役的旧正文必须从 authority 与投影一起退出。
+
 ### 3. 风险裁决
 
 以下低风险项目可自动合并：
 
 - 用户在当前或可追溯对话中明确表达的稳定输出偏好。
 - 对既有规则的去重、错别字修复和不改变含义的压缩。
+- 有更强证据支持、范围清楚且不改变高风险边界的纠错、缩限、替代、迁移或退役。
 - 已有 profile 的版本、安装方式或验证状态更新。
 - 多个 Agent profile 中直接一致、且不涉及权限的通用偏好。
 
@@ -66,6 +69,7 @@ metadata:
 - 核心身份、价值观、长期方向 summit 或 Agent 职责重新划分。
 - 证据互相矛盾，无法判断哪个规则仍有效。
 - 将 Agent-specific 规则提升为全局 common。
+- 规则扩域、无法证明新证据强于旧规则，或会移除仍有独特价值的长期资产。
 - 会覆盖用户手写且不在 Second Brain 管理块内的规则。
 
 不确定但低影响的推断可以保留为带证据和复核日期的候选，不得伪装成用户明确偏好。
@@ -74,12 +78,13 @@ metadata:
 
 1. 先更新 COMMON-RULES 或当前 Agent profile 的唯一 owner；不要直接从一个宿主复制到另一个宿主。
 2. 保留 Agent profile 的叙事性和独特定位，不按统一字段把角色削平成模板。
-3. 更新来源、时间和变更说明。若涉及 Vault canonical，遵守完整 capture/原子性/关系门禁。
-4. 所有 authority 变化先使用本地短任务分支、精确 diff、秘密扫描和门禁；`private-remote` 再经已验证为 private 的 `origin` PR 汇合，`local-only` 只保留本地 commit 与备份，不做远端写入。
+3. 把 owner 维护为当前最优状态：去重、纠错、压缩、迁移并移除失效活动正文；历史依据进 Git、LOG、receipt 或不可变来源，不在活动 owner 中累积 tombstone。除非有可验证硬限制，不设任意行数或字节上限。
+4. 更新来源、时间和变更说明。若涉及 Vault canonical，遵守完整 capture/原子性/关系门禁。
+5. 所有 authority 变化先使用本地短任务分支、精确 diff、秘密扫描和门禁；`private-remote` 再经已验证为 private 的 `origin` PR 汇合，`local-only` 只保留本地 commit 与备份，不做远端写入。
 
 ### 5. 更新当前宿主投影
 
-只重写 Second Brain 管理块，使其包含：
+只重写 Second Brain 管理块，并同步删除其中已被替代、迁移或退役的摘要，使其包含：
 
 - owner 路径或 MCP 读取方式。
 - COMMON-RULES 的当前摘要与 SHA。
@@ -93,12 +98,12 @@ metadata:
 
 1. 运行 Vault compiler、lint 和图谱门禁。
 2. 验证七个 Skill 可发现、MCP 连通、管理块哈希与 owner 一致。
-3. 在全新宿主会话调用 `second-brain-doctor`。
+3. 在全新宿主会话调用 `second-brain-doctor`；对发生转换的规则，用配对场景同时证明新行为生效和旧行为退出。
 4. `private-remote` 在 PR 合并后更新本地 main；`local-only` 在本地合并或快进已验收分支。两种模式都确认工作树不含意外文件。
 
 ## 冲突合并原则
 
-Git 的文本 merge 只负责保留双方变更；当前 Agent 必须语义审查同一条规则是否重复、冲突或被错误分类。不要因为 Git 自动合并成功就宣布知识同步成功。冲突解决保留双方证据，并在高风险时交给用户裁决。
+Git 的文本 merge 只负责保留双方变更；当前 Agent 必须语义审查同一条规则是否重复、冲突、被错误分类或已经被更强证据替代。不要因为 Git 自动合并成功就宣布知识同步成功，也不要为“保留双方”把互斥旧规则共同留在活动文件。冲突解决保留双方历史证据，并在高风险时交给用户裁决。
 
 ## 输出
 
