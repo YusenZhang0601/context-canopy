@@ -194,13 +194,20 @@ and finish with a fresh-session Doctor check. Report only what was actually veri
 
 ContextCanopy is not trying to be another hosted vector-memory API or a LifeOS dashboard. Its center is **migration of a person's governed context across independent agents**.
 
-| Adjacent category | ContextCanopy's distinction |
-|---|---|
-| Provider memory | User-owned context that can outlive one product |
-| Vector / graph memory | Human-readable authority and evidence, not only retrieval |
-| Cross-agent coding memory | Personal continuity beyond project facts |
-| Stateful agent platforms | Continuity across agents rather than one agent's internal state |
-| Obsidian / LifeOS templates | Agent-operable context substrate rather than a planning UI |
+### Repository comparison
+
+Documentation checked **2026-10-23** for the three closest projects in the landscape. Upstream links pin the reviewed revisions; this table covers local setups, whose hosted alternatives may differ.
+
+| Dimension | ContextCanopy | [Basic Memory](https://github.com/basicmachines-co/basic-memory/blob/ac2d3d442e7d2389f812594d145d068f7b65d1d5/README.md) | [AgentCairn](https://github.com/ccf/agentcairn/blob/bb66c80ba2ae1d47624b6a98b4e1e237e28e7e93/README.md) | [Memorix](https://github.com/AVIDS2/memorix/blob/79bacd303c03376137d10f52f75906006a34b4af/README.md) |
+|---|---|---|---|---|
+| Cross-agent sharing | Shared Vault via MCP + host projections | Shared Markdown graph via MCP | Shared vault via MCP + host integrations | Shared Git-project memory via MCP + integrations |
+| Long-term context | Personal identity, preferences, rules, and goals | Personal knowledge notes and relations | Durable coding/project context | Reviewed long-term records; opt-in user scope |
+| User-controlled storage | Canonical Markdown in your repository | Canonical Markdown; local SQLite index | Canonical Markdown; disposable DuckDB index | Canonical local SQLite; rebuildable search indexes |
+| Evidence and freshness | [Immutable sources](vault/04-Sources/README.md), provenance, and freshness checks | Observations and typed note links | Provenance, validity dates, and supersession | [Evidence cards](https://github.com/AVIDS2/memorix/blob/79bacd303c03376137d10f52f75906006a34b4af/docs/API_REFERENCE.md#evidence-cards-and-feedback) with source references, hashes, and freshness |
+| Agent roles / memory scope | [Shared user rules + distinct role profiles](AGENTS.md#privacy-and-authority-boundary) | Separate knowledge projects | Project-scoped automatic recall by default | [Project, personal, and team visibility](https://github.com/AVIDS2/memorix/blob/79bacd303c03376137d10f52f75906006a34b4af/docs/API_REFERENCE.md#memorix_store) |
+| Local setup | Node.js 18+; Python 3.10+ / PyYAML | Python 3.12+; `uv` install | Python 3.11+ / `uv`; local model download | Node.js 22.18+; Git; LLM/embeddings optional |
+
+Role profiles and memory scopes are different mechanisms, not equivalent security guarantees. Skills and MCP-tool counts describe packaging, not comparable units of capability. This is a documentation comparison: no cross-project latency, token-cost, or task-success benchmark has been run.
 
 See the dated [project landscape](docs/landscape.md) for comparisons with Basic Memory, AgentCairn, Memorix, AMP, Mem0, Graphiti, Letta, LifeOS, and related work.
 

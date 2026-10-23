@@ -192,13 +192,20 @@ v1.0.2 的 MCP 包从仓库内 `mcp/` 源码安装；本项目不会把它宣传
 
 ContextCanopy 不想成为又一个托管向量 Memory API，也不是 LifeOS 面板。它的核心定位是：**在彼此独立的 Agent 之间迁移一个人的受治理上下文**。
 
-| 相邻类别 | ContextCanopy 的差异 |
-|---|---|
-| 厂商内置 Memory | 能比单一产品活得更久的用户自有上下文 |
-| 向量 / 图 Memory | 人类可读 authority 与证据，而不只是检索 |
-| 跨 Agent coding Memory | 不只迁移项目事实，还保持个人连续性 |
-| Stateful Agent 平台 | 跨 Agent 连续性，而不是单个 Agent 的内部状态 |
-| Obsidian / LifeOS 模板 | 可由 Agent 操作的上下文基底，而不是规划 UI |
+### 仓库横向比较
+
+以下三个项目是现有 landscape 中最接近的对照，公开文档核查于 **2026-10-23**。上游链接固定到本次核查的版本；表格比较本地部署，托管版本可能有所不同。
+
+| 维度 | ContextCanopy | [Basic Memory](https://github.com/basicmachines-co/basic-memory/blob/ac2d3d442e7d2389f812594d145d068f7b65d1d5/README.md) | [AgentCairn](https://github.com/ccf/agentcairn/blob/bb66c80ba2ae1d47624b6a98b4e1e237e28e7e93/README.md) | [Memorix](https://github.com/AVIDS2/memorix/blob/79bacd303c03376137d10f52f75906006a34b4af/README.md) |
+|---|---|---|---|---|
+| 跨 Agent 共享 | 通过 MCP + 宿主投影共享 Vault | 通过 MCP 共享 Markdown 图谱 | 通过 MCP + 宿主集成共享 Vault | 通过 MCP + 集成共享 Git 项目记忆 |
+| 长期上下文 | 个人身份、偏好、规则与目标 | 个人知识笔记与关系 | 持久的 coding / 项目上下文 | 经审查的长期记录；用户范围需显式启用 |
+| 用户控制的存储 | 仓库中的 canonical Markdown | Canonical Markdown；本地 SQLite 索引 | Canonical Markdown；可删除重建的 DuckDB 索引 | Canonical 本地 SQLite；可重建的检索索引 |
+| 证据与时效 | [不可变来源](vault/04-Sources/README.md)、来源链与新鲜度检查 | Observations 与带类型的笔记链接 | 来源信息、有效期与取代关系 | 含来源引用、哈希与新鲜度的[证据卡](https://github.com/AVIDS2/memorix/blob/79bacd303c03376137d10f52f75906006a34b4af/docs/API_REFERENCE.md#evidence-cards-and-feedback) |
+| Agent 角色 / 记忆范围 | [共享用户规则 + 独立角色档案](AGENTS.md#privacy-and-authority-boundary) | 独立的知识项目 | 自动召回默认限定于项目 | [项目、个人与团队可见性](https://github.com/AVIDS2/memorix/blob/79bacd303c03376137d10f52f75906006a34b4af/docs/API_REFERENCE.md#memorix_store) |
+| 本地安装 | Node.js 18+；Python 3.10+ / PyYAML | Python 3.12+；通过 `uv` 安装 | Python 3.11+ / `uv`；下载本地模型 | Node.js 22.18+；Git；LLM / embeddings 可选 |
+
+角色档案与记忆范围是不同机制，不代表等价的安全保证。Skills 与 MCP 工具数量描述的是功能如何拆分封装，不能直接用于比较产品能力。本表仅核查文档，未进行跨项目延迟、token 成本或任务成功率对测。
 
 详见带日期的[对标项目研究](docs/landscape.zh-CN.md)，其中对照了 Basic Memory、AgentCairn、Memorix、AMP、Mem0、Graphiti、Letta、LifeOS 等项目。
 
