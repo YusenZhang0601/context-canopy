@@ -45,6 +45,6 @@
   "homepage": "https://github.com/YusenZhang0601/context-canopy#readme",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.1",
-    "yaml": "^2.8.1"
+    "yaml": "^2.9.1"
   }
 }
