@@ -24,7 +24,7 @@
   <a href="#why-contextcanopy">Why?</a> ·
   <a href="#proof-not-promise">Proof</a> ·
   <a href="#quick-start">Quick start</a> ·
-  <a href="#what-ships-in-v101">Features</a> ·
+  <a href="#what-ships-in-v110">Features</a> ·
   <a href="README.zh-CN.md">简体中文</a>
 </p>
 
@@ -145,7 +145,7 @@ npm test
 npm run smoke
 ```
 
-The v1.0.2 MCP package is installed from this repository's `mcp/` source; it is not advertised as an npm-published package.
+The v1.1.0 MCP package is installed from this repository's `mcp/` source; it is not advertised as an npm-published package.
 
 ### 3. Attach an agent
 
@@ -158,11 +158,12 @@ Install the bundled Skills, configure the local MCP server, run the documented c
 and finish with a fresh-session Doctor check. Report only what was actually verified.
 ```
 
-## What ships in v1.0.2
+## What ships in v1.1.0
 
 | Capability | Included |
 |---|---|
 | Portable continuity | User-owned Markdown authority shared across independent agents |
+| Three-layer BM25F graph search | Zero-dependency `Intl.Segmenter` Chinese/English segmentation, 6-zone BM25F ranking across `01-Knowledge`/`02-Insights`/`03-Personal`, clean YAML-free excerpts, and 1-hop bidirectional relation context in `get_entry` |
 | Corrective learning | Evidence-backed Learn can add, correct, narrow, replace, merge, relocate, or retire active rules while preserving identity, privacy, and permission boundaries |
 | Distinct agents | Shared user rules plus separate Claude, Codex, AntiGravity, and Hermes roles |
 | Compiled knowledge graph | Atomic owners, typed relations, freshness, backlinks, provenance, and deterministic views |
@@ -224,6 +225,7 @@ npm run smoke
 cd mcp
 node --check index.js
 node --check lib/vault-writer.js
+node --check lib/search-engine.js
 npm pack --dry-run
 npm audit --audit-level=low
 ```
@@ -235,7 +237,7 @@ CI runs at the declared minimums: Node.js 18 and Python 3.10.
 - Historical migration is guided and source-preserving; universal one-click provider import is not included.
 - Every real host still needs its own fresh-session attachment proof.
 - The canonical layer is plaintext, not encrypted storage. Use private remotes, filesystem permissions, encrypted backups, and secret hygiene.
-- Search is intentionally simple in v1.0.2. Optional disposable indexes may be added later without replacing Markdown authority.
+- Search in v1.1.0 uses zero-dependency in-memory BM25F ranking, native `Intl.Segmenter` Chinese/English word segmentation, and 1-hop graph relations directly over canonical Markdown; it does not require or bundle a vector database or embedding model.
 
 ## Project name and compatibility
 

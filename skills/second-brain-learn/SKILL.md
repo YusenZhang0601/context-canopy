@@ -1,6 +1,6 @@
 ---
 name: second-brain-learn
-description: "从当前 Agent 对话和工作轨迹中挖掘可长期保留的偏好、方法、Agent 角色事实、项目规则、知识与山脉进展；审计现有 owner，新增、纠错、缩限、替代、合并、迁移或退役规则，自动合并有证据的低风险变化，高风险变更先询问用户，并同步当前 Agent。用户说学习、记住、采纳或停止某种行为、修正规则、保存本次经验、从当前对话改进、运行 /learn，或要求未来 Agent 遵守某项教训时使用。"
+description: "从当前 Agent 对话和工作轨迹中挖掘可长期保留的偏好、方法、Agent 角色事实、项目规则、知识与山脉进展；审计现有 owner，新增、纠错、缩限、替代、合并、迁移或退役规则，自动合并有证据的低风险变化，高风险变更先询问用户，并同步当前 Agent。用户说学习、记住、采纳或停止某种行为、修正规则、保存本次经验、从当前对话改进、运行 /second-brain-learn，或要求未来 Agent 遵守某项教训时使用。"
 metadata:
   display_name: "Second Brain - Learn（沉淀当前对话与工作经验）"
 ---
@@ -11,8 +11,8 @@ metadata:
 
 ## 显式调用
 
-- Codex：`$second-brain-learn`，或从 `/skills` 选择。历史 `/learn` 入口应薄重定向到本 Skill。
-- Claude、Hermes、AntiGravity：`/second-brain-learn`。
+- Codex：`$second-brain-learn`，或从 `/skills` 选择。
+- Claude、Hermes、AntiGravity：`/second-brain-learn`。宿主原生的 `/learn` 保留给各宿主自己的工作区规则学习，不被本 Skill 拦截。
 
 ## 范围
 

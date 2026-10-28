@@ -1,6 +1,6 @@
 {
   "name": "context-canopy",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Portable, local-first personal AI context: switch agents without losing memory, identity, goals, rules, or evidence",
   "type": "module",
   "private": true,

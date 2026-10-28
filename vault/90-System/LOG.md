@@ -7,6 +7,15 @@ tags:
 
 # Log
 
+## [2026-10-27] release | ContextCanopy v1.1.0 三层主图谱 BM25F 检索引擎与 1-Hop 关系感知升级
+
+- `mcp/` 升级至 `v1.1.0`：新增零外部依赖 `mcp/lib/search-engine.js`，基于 Node 原生 `Intl.Segmenter('zh-CN', { granularity: 'word' })` + CJK Bigram 回退与英文词干归一化，构建 6 域 BM25F（`title`/`aliases`/`summary`/`headings`/`tags`/`body`）加权检索引擎与进程内 `mtimeMs` 图谱缓存。
+- `search_knowledge`、`get_entry`、`list_entries` 只读检索与读取范围正式覆盖三层 canonical 主图谱（`01-Knowledge`、`02-Insights`、`03-Personal`），严格校验各层根目录 `realpathSync` 防越界；公共 MCP 写入仍严格锁定在 `01-Knowledge`。
+- `search_knowledge` 彻底剥离 YAML frontmatter 噪音，返回纯净正文高密度片段与 `layer`、`freshness`、`review_after`、`confidence`、`card_form`、`summary`、`matched_fields`；`get_entry` 新增 1-Hop `outbound_relations` 与 `inbound_relations` 双向关系展开。
+- 更新 `COMMON-RULES.md` 的 MCP 检索路由指引，并同步收敛 `second-brain-learn` 的宿主原生 `/learn` 边界。
+
+**状态**: ✅ 公开模板 compiler/lint、25 项 MCP 单测、隔离 full-Vault stdio smoke 与 Skill 双镜像一致性全部通过
+
 ## [2026-08-23] governance | Learn 活动规则净优化进入公开模板
 
 - 将 Learn 从只追加经验改为显式状态转换：`add`、`reinforce/no-op`、`correct`、`narrow`、`broaden`、`replace`、`merge`、`relocate` 或 `retire`；新证据必须按 authority、范围与证明强度审计，不能只凭时间覆盖旧证据。

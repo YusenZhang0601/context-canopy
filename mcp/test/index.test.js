@@ -12,6 +12,7 @@ import {
   listEntries,
   listSecondBrainSkills,
   readSecondBrainSkill,
+  searchKnowledge,
   toolDefinitions
 } from '../index.js';
 
@@ -230,4 +231,234 @@ test('tool surface contains the four legacy tools and five thin personal AI read
       'search_knowledge'
     ]
   );
+});
+
+test('search_knowledge indexes all three canonical layers with Chinese segmentation, BM25F title ranking, clean excerpts, and 1-hop relations in get_entry', t => {
+  const vault = fs.mkdtempSync(path.join(os.tmpdir(), 'second-brain-bm25f-'));
+  t.after(() => fs.rmSync(vault, { recursive: true, force: true }));
+
+  const writeCard = (relative, content) => {
+    const target = path.join(vault, relative);
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.writeFileSync(target, content);
+  };
+
+  writeCard(
+    '01-Knowledge/Technical/WorldQuant-BRAIN-Genius系统.md',
+    `---
+type: knowledge
+created: 2026-10-20
+updated: 2026-10-23
+status: active
+summary: WorldQuant BRAIN Genius 等级与权益体系说明
+card_form: entity
+atomic_scope: 定义 WorldQuant BRAIN Genius 等级体系
+confidence: medium
+aliases:
+  - Genius系统
+freshness: stale
+last_checked: 2026-10-23
+sources:
+  - Current conversation
+tags:
+  - domain/knowledge
+  - topic/quant
+  - status/active
+---
+# WorldQuant BRAIN Genius系统
+
+## 核心摘要
+
+Genius 等级决定 consultant 的可用 Scope 数量与 Osmosis 配点资格。
+
+## 关系
+
+- **下位概念**：[[WorldQuant-BRAIN-Osmosis配置规则]]
+- **支撑**：[[长期方向与山脉]]
+
+## 内容
+
+WorldQuant BRAIN 平台根据季度表现划分 Genius 等级，顾问可以在合规 Scope 内配置 Osmosis 锁仓权重。WorldQuant BRAIN 顾问需要关注 Scope 锁仓表现。
+
+## 更新记录
+
+- 2026-10-23：初始化。
+`
+  );
+
+  writeCard(
+    '01-Knowledge/Technical/WorldQuant-BRAIN-Osmosis配置规则.md',
+    `---
+type: knowledge
+created: 2026-10-20
+updated: 2026-10-23
+status: active
+summary: WorldQuant BRAIN Osmosis 配置规则：至少 3 个 Scope、每个恰好 100,000 点与每周日锁仓
+card_form: atomic
+atomic_scope: 说明 WorldQuant BRAIN Osmosis 的配点与锁仓规则
+confidence: medium
+aliases:
+  - Osmosis配置规则
+freshness: stale
+last_checked: 2026-10-23
+sources:
+  - Current conversation
+tags:
+  - domain/knowledge
+  - topic/quant
+  - status/active
+---
+# WorldQuant BRAIN Osmosis配置规则
+
+## 核心摘要
+
+至少配置 3 个 Scope，每个配点 Scope 恰好 100,000 点且不少于 10 枚 Alpha，每周日 23:59 EST 锁仓。
+
+## 关系
+
+- **上位概念**：[[WorldQuant-BRAIN-Genius系统]]
+- **服务于**：[[长期方向与山脉]]
+
+## 内容
+
+每个 Scope 锁仓后 7 天生效，滚动 3 个月内至少 6 周合规才有 Combined Osmosis Performance。
+
+## 更新记录
+
+- 2026-10-23：初始化。
+`
+  );
+
+  writeCard(
+    '02-Insights/Philosophy/资本复利与自由选择权.md',
+    `---
+type: insight
+created: 2026-10-21
+updated: 2026-10-25
+status: evergreen
+summary: 通过学术资本与现实资本持续复利来扩大人生自主选择权
+card_form: atomic
+atomic_scope: 阐述资本复利与自主选择权的关系
+confidence: high
+aliases:
+  - 复利哲学
+freshness: timeless
+last_checked: 2026-10-25
+sources:
+  - Current conversation
+tags:
+  - domain/insight
+  - status/evergreen
+---
+# 资本复利与自由选择权
+
+## 核心摘要
+
+自由来自资本复利带来的退路与选择权。
+
+## 关系
+
+- **支撑**：[[长期方向与山脉]]
+
+## 内容
+
+将时间投入可复利的学术资产与工程资产。
+
+## 更新记录
+
+- 2026-10-25：初始化。
+`
+  );
+
+  writeCard(
+    '03-Personal/Profile/长期方向与山脉.md',
+    `---
+type: personal
+created: 2026-10-15
+updated: 2026-10-27
+status: active
+summary: 个人长期方向总纲：以资本积累与复利为唯一一级事业机制，统摄学术资本与现实资本
+card_form: entity
+atomic_scope: 定义个人长期方向与山脉总纲
+confidence: high
+aliases:
+  - 长期方向总纲
+freshness: current
+review_after: 2026-11-27
+last_checked: 2026-10-27
+sources:
+  - Current conversation
+tags:
+  - domain/personal
+  - status/active
+---
+# 长期方向与山脉
+
+## 核心摘要
+
+唯一一级事业机制是资本积累与复利，下分学术资本与现实资本两个一级账户。
+
+## 关系
+
+- **理论依据**：[[资本复利与自由选择权]]
+- **组成部分**：[[WorldQuant-BRAIN-Genius系统]]
+
+## 内容
+
+长期方向总纲用于指导山脉爬坡与双周复盘。
+
+## 更新记录
+
+- 2026-10-27：更新。
+`
+  );
+
+  const osmosisQuery = payload(
+    searchKnowledge('WorldQuant BRAIN Osmosis 配置规则 Scope 锁仓', vault)
+  );
+  assert.ok(osmosisQuery.totalResults >= 2);
+  assert.equal(
+    osmosisQuery.results[0].path,
+    'Technical/WorldQuant-BRAIN-Osmosis配置规则.md',
+    'BM25F + title weighting must rank the exact Osmosis rule card #1 ahead of the broader Genius card'
+  );
+  assert.doesNotMatch(
+    osmosisQuery.results[0].excerpt,
+    /^---\s/m,
+    'search excerpt must not contain raw YAML frontmatter'
+  );
+  assert.equal(osmosisQuery.results[0].freshness, 'stale');
+
+  const mountainQuery = payload(searchKnowledge('长期方向 山脉 资本', vault));
+  assert.ok(mountainQuery.totalResults >= 1);
+  assert.equal(mountainQuery.results[0].canonical_path, '03-Personal/Profile/长期方向与山脉.md');
+  assert.equal(mountainQuery.results[0].domain, '03-Personal');
+
+  const insightOnly = payload(
+    searchKnowledge({ query: '资本复利 自由选择权', scope: 'insights' }, vault)
+  );
+  assert.equal(insightOnly.totalResults, 1);
+  assert.equal(insightOnly.results[0].canonical_path, '02-Insights/Philosophy/资本复利与自由选择权.md');
+
+  const negative = payload(searchKnowledge('zzz-nonexistent-topic', vault));
+  assert.equal(negative.totalResults, 0);
+  assert.deepEqual(negative.results, []);
+
+  const mountainEntry = payload(getEntry('03-Personal/Profile/长期方向与山脉.md', vault));
+  assert.equal(mountainEntry.canonical_path, '03-Personal/Profile/长期方向与山脉.md');
+  assert.equal(mountainEntry.domain, '03-Personal');
+  assert.ok(
+    mountainEntry.outbound_relations.some(
+      rel => rel.canonical_path === '02-Insights/Philosophy/资本复利与自由选择权.md'
+    )
+  );
+  assert.ok(
+    mountainEntry.inbound_relations.some(
+      rel => rel.canonical_path === '01-Knowledge/Technical/WorldQuant-BRAIN-Osmosis配置规则.md'
+    )
+  );
+
+  const allListed = payload(listEntries({ scope: 'all', category: 'all', limit: 20 }, vault));
+  assert.equal(allListed.scope, 'all');
+  assert.equal(allListed.total, 4);
 });

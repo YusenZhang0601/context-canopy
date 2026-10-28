@@ -7,7 +7,8 @@ import { fileURLToPath } from 'node:url';
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
-import { CaptureError, captureKnowledge, parsePage } from './lib/vault-writer.js';
+import { CANONICAL_DOMAINS, searchCanonicalGraph, sharedGraphCache } from './lib/search-engine.js';
+import { CaptureError, captureKnowledge, parsePage, shanghaiClock } from './lib/vault-writer.js';
 
 /**
  * Adaptively resolves the Second Brain Vault root path.
@@ -368,10 +369,33 @@ export function toolDefinitions() {
     },
     {
       name: 'search_knowledge',
-      description: '在 Second Brain canonical 知识图谱中搜索概念、项目经验和技术材料。',
+      description: '在 Second Brain 三层 canonical 主图谱（01-Knowledge、02-Insights、03-Personal）中按中英混合分词与 BM25F 字段加权搜索概念、经验、洞察与个人方向。',
       inputSchema: {
         type: 'object',
-        properties: { query: { type: 'string', description: '关键词或短语' } },
+        properties: {
+          query: { type: 'string', description: '关键词、短语或自然语言问题' },
+          scope: {
+            type: 'string',
+            enum: ['all', 'knowledge', 'insights', 'personal'],
+            description: '搜索范围：默认 all 覆盖三层主图谱；可指定 knowledge、insights 或 personal'
+          },
+          category: {
+            type: 'string',
+            description: '可选子目录过滤，如 Technical、Experience、Projects、Methodology、Architecture、Philosophy、Workplace、Mountains、Profile、People'
+          },
+          tag_filter: { type: 'string', description: '可选标签子串过滤' },
+          freshness: {
+            type: 'string',
+            enum: ['timeless', 'current', 'stale', 'blocked'],
+            description: '可选新鲜度过滤'
+          },
+          limit: {
+            type: 'number',
+            minimum: 1,
+            maximum: 50,
+            description: '返回条数上限（默认 10，最大 50）'
+          }
+        },
         required: ['query']
       }
     },
@@ -474,21 +498,38 @@ export function toolDefinitions() {
     },
     {
       name: 'get_entry',
-      description: '读取指定 canonical 知识页及其 frontmatter 和双链。',
+      description: '读取指定 canonical 页面（支持 01-Knowledge 相对路径或 01-Knowledge/02-Insights/03-Personal 规范路径）及其 frontmatter、新鲜度状态和 1-Hop 双向图谱关系。',
       inputSchema: {
         type: 'object',
-        properties: { path: { type: 'string', description: '相对 01-Knowledge 的 Markdown 路径' } },
+        properties: {
+          path: {
+            type: 'string',
+            description: '相对 01-Knowledge 的路径（如 Technical/xxx.md）或带主图谱域名前缀路径（如 02-Insights/Philosophy/xxx.md、03-Personal/Mountains/xxx.md）'
+          }
+        },
         required: ['path']
       }
     },
     {
       name: 'list_entries',
-      description: '按目录、标签和更新时间列出 canonical 知识页。',
+      description: '按主图谱范围、目录、标签、新鲜度和更新时间列出 canonical 页面。',
       inputSchema: {
         type: 'object',
         properties: {
-          category: { type: 'string', enum: ['Experience', 'Projects', 'Technical', 'all'] },
+          scope: {
+            type: 'string',
+            enum: ['knowledge', 'insights', 'personal', 'all'],
+            description: '主图谱范围：默认 knowledge（01-Knowledge）；设为 all 可列出三层全部 canonical 页面'
+          },
+          category: {
+            type: 'string',
+            enum: ['Experience', 'Projects', 'Technical', 'Insights', 'Personal', 'all']
+          },
           tag_filter: { type: 'string' },
+          freshness: {
+            type: 'string',
+            enum: ['timeless', 'current', 'stale', 'blocked']
+          },
           sort_by: { type: 'string', enum: ['updated', 'created', 'title'] },
           limit: { type: 'number', minimum: 1, maximum: 500 }
         }
@@ -504,39 +545,96 @@ function textResult(payload, isError = false) {
   };
 }
 
-function searchKnowledge(rawQuery, knowledgeRoot = KB_PATH) {
-  const query = sanitizeQuery(rawQuery);
-  if (!query) return textResult({ error: 'invalid_query', message: '查询不能为空' }, true);
-  const keywords = query.toLowerCase().split(/\s+/).filter(word => word.length > 1);
-  const ranked = [];
-  for (const file of walkMarkdown(knowledgeRoot)) {
-    try {
-      const content = fs.readFileSync(file, 'utf8');
-      const lower = content.toLowerCase();
-      const score = keywords.reduce((total, keyword) => total + (lower.includes(keyword) ? 1 : 0), 0);
-      if (score > 0) ranked.push({ file, content, score });
-    } catch {}
+export function searchKnowledge(rawInput, knowledgeRoot = KB_PATH) {
+  const result = searchCanonicalGraph(rawInput, knowledgeRoot, { allowVaultUpgrade: true });
+  if (result.error) {
+    return textResult(result, true);
   }
-  ranked.sort((a, b) => b.score - a.score || a.file.localeCompare(b.file));
-  const results = ranked.slice(0, 10).map((item, index) => ({
-    rank: index + 1,
-    title: item.content.match(/^#\s+(.+)$/m)?.[1] || path.basename(item.file, '.md'),
-    path: path.relative(knowledgeRoot, item.file),
-    ...(index === 0 ? { excerpt: extractRelevantExcerpt(item.content, keywords) } : {})
-  }));
-  return textResult({ query, totalResults: ranked.length, showing: results.length, results });
+  return textResult(result);
+}
+
+function resolveCanonicalEntryFile(relativePath, knowledgeRoot = KB_PATH) {
+  const raw = String(relativePath || '').trim().replaceAll('\\', '/');
+  if (!raw || raw.includes('\0') || raw.split('/').includes('..')) return null;
+
+  const resolvedKnowledge = path.resolve(knowledgeRoot);
+  const vaultRoot = path.basename(resolvedKnowledge) === '01-Knowledge'
+    ? path.dirname(resolvedKnowledge)
+    : (fs.existsSync(path.join(resolvedKnowledge, '01-Knowledge')) ? resolvedKnowledge : null);
+  const actualKnowledgeRoot = vaultRoot ? path.join(vaultRoot, '01-Knowledge') : resolvedKnowledge;
+
+  if (raw.startsWith('01-Knowledge/')) {
+    const sub = raw.slice('01-Knowledge/'.length);
+    const file = safeKnowledgePath(sub, actualKnowledgeRoot);
+    return file ? { file, rootDir: actualKnowledgeRoot, domain: '01-Knowledge', toolPath: sub } : null;
+  }
+
+  if (vaultRoot && (raw.startsWith('02-Insights/') || raw.startsWith('03-Personal/'))) {
+    const domain = raw.split('/')[0];
+    const sub = raw.slice(domain.length + 1);
+    const domainRoot = path.join(vaultRoot, domain);
+    const file = safeKnowledgePath(sub, domainRoot);
+    if (!file) return null;
+    const rel = path.relative(fs.realpathSync(domainRoot), file).split(path.sep).join('/');
+    return { file, rootDir: domainRoot, domain, toolPath: `${domain}/${rel}` };
+  }
+
+  const directFile = safeKnowledgePath(raw, actualKnowledgeRoot);
+  if (directFile) {
+    const rel = path.relative(fs.realpathSync(actualKnowledgeRoot), directFile).split(path.sep).join('/');
+    return { file: directFile, rootDir: actualKnowledgeRoot, domain: '01-Knowledge', toolPath: rel };
+  }
+
+  if (vaultRoot && /^(?:Philosophy|Workplace)\//.test(raw)) {
+    const domainRoot = path.join(vaultRoot, '02-Insights');
+    const file = safeKnowledgePath(raw, domainRoot);
+    if (file) {
+      const rel = path.relative(fs.realpathSync(domainRoot), file).split(path.sep).join('/');
+      return { file, rootDir: domainRoot, domain: '02-Insights', toolPath: `02-Insights/${rel}` };
+    }
+  }
+
+  if (vaultRoot && /^(?:Mountains|Profile|People)\//.test(raw)) {
+    const domainRoot = path.join(vaultRoot, '03-Personal');
+    const file = safeKnowledgePath(raw, domainRoot);
+    if (file) {
+      const rel = path.relative(fs.realpathSync(domainRoot), file).split(path.sep).join('/');
+      return { file, rootDir: domainRoot, domain: '03-Personal', toolPath: `03-Personal/${rel}` };
+    }
+  }
+
+  return null;
 }
 
 export function getEntry(relativePath, knowledgeRoot = KB_PATH) {
-  const file = safeKnowledgePath(relativePath, knowledgeRoot);
-  if (!file || !fs.existsSync(file)) return textResult({ error: 'not_found', path: relativePath }, true);
+  const resolved = resolveCanonicalEntryFile(relativePath, knowledgeRoot);
+  if (!resolved || !fs.existsSync(resolved.file)) {
+    return textResult({ error: 'not_found', path: relativePath }, true);
+  }
   try {
-    const content = fs.readFileSync(file, 'utf8');
+    const content = fs.readFileSync(resolved.file, 'utf8');
     const { metadata } = parsePage(content);
     const links = [...new Set([...content.matchAll(/\[\[([^\]]+)\]\]/g)].map(match => match[1]))];
+    const today = shanghaiClock().day;
+    const reviewAfter = metadata.review_after ? String(metadata.review_after) : null;
+    const isExpired = metadata.freshness === 'current' && Boolean(reviewAfter) && reviewAfter < today;
+
+    const { records } = sharedGraphCache.loadRecords(knowledgeRoot, {
+      scope: 'all',
+      allowVaultUpgrade: true
+    });
+    const { outboundMap, inboundMap } = sharedGraphCache.buildGraph(records);
+    const relToDomain = path.relative(fs.realpathSync(resolved.rootDir), resolved.file).split(path.sep).join('/');
+    const canonicalPath = `${resolved.domain}/${relToDomain}`;
+
     return textResult({
-      path: path.relative(fs.realpathSync(knowledgeRoot), file),
+      path: resolved.toolPath,
+      canonical_path: canonicalPath,
+      domain: resolved.domain,
       frontmatter: metadata,
+      is_expired: isExpired,
+      outbound_relations: outboundMap.get(canonicalPath) || [],
+      inbound_relations: inboundMap.get(canonicalPath) || [],
       content,
       links
     });
@@ -547,12 +645,66 @@ export function getEntry(relativePath, knowledgeRoot = KB_PATH) {
 
 export function listEntries(args = {}, knowledgeRoot = KB_PATH) {
   const category = args.category || 'all';
+  const requestedScope = args.scope || (
+    category === 'Insights' ? 'insights' : (category === 'Personal' ? 'personal' : 'knowledge')
+  );
+
+  if (requestedScope !== 'knowledge') {
+    const validScopes = new Set(['all', 'knowledge', 'insights', 'personal']);
+    if (!validScopes.has(requestedScope)) {
+      return textResult({ error: 'invalid_scope', scope: requestedScope }, true);
+    }
+    const { records } = sharedGraphCache.loadRecords(knowledgeRoot, {
+      scope: requestedScope,
+      allowVaultUpgrade: true
+    });
+    const sortBy = args.sort_by || 'updated';
+    const limit = Math.max(1, Math.min(Number(args.limit) || 20, 500));
+    const entries = records
+      .filter(record => {
+        if (args.tag_filter && !record.tags.some(tag => tag.includes(args.tag_filter))) return false;
+        if (args.freshness && record.freshness !== args.freshness) return false;
+        return true;
+      })
+      .map(record => ({
+        title: record.title,
+        path: record.toolPath,
+        canonical_path: record.canonicalPath,
+        domain: record.domain,
+        category: record.category,
+        summary: record.summary,
+        updated: record.updated,
+        created: record.created,
+        status: record.status,
+        freshness: record.freshness,
+        ...(record.reviewAfter ? { review_after: record.reviewAfter, is_expired: record.isExpired } : {}),
+        tags: record.tags
+      }));
+    entries.sort((a, b) => {
+      if (sortBy === 'title') return a.title.localeCompare(b.title, 'zh-CN');
+      return String(b[sortBy]).localeCompare(String(a[sortBy])) || a.title.localeCompare(b.title, 'zh-CN');
+    });
+    const scopeLabel = requestedScope === 'all'
+      ? 'all'
+      : (CANONICAL_DOMAINS.find(d => d.scopeKey === requestedScope)?.domain || '01-Knowledge');
+    return textResult({
+      scope: scopeLabel,
+      total: entries.length,
+      showing: Math.min(entries.length, limit),
+      sort_by: sortBy,
+      entries: entries.slice(0, limit)
+    });
+  }
+
   if (!LISTABLE_KNOWLEDGE_CATEGORIES.has(category)) {
     return textResult({ error: 'invalid_category', category }, true);
   }
+  const actualKnowledgeRoot = fs.existsSync(path.join(knowledgeRoot, '01-Knowledge'))
+    ? path.join(knowledgeRoot, '01-Knowledge')
+    : knowledgeRoot;
   const sortBy = args.sort_by || 'updated';
   const limit = Math.max(1, Math.min(Number(args.limit) || 20, 500));
-  const requestedRoot = category === 'all' ? knowledgeRoot : path.join(knowledgeRoot, category);
+  const requestedRoot = category === 'all' ? actualKnowledgeRoot : path.join(actualKnowledgeRoot, category);
   if (!fs.existsSync(requestedRoot)) {
     return textResult({
       scope: '01-Knowledge',
@@ -562,28 +714,35 @@ export function listEntries(args = {}, knowledgeRoot = KB_PATH) {
       entries: []
     });
   }
-  const categoryRoot = safeKnowledgeDirectory(category, knowledgeRoot);
+  const categoryRoot = safeKnowledgeDirectory(category, actualKnowledgeRoot);
   if (!categoryRoot) {
     return textResult({ error: 'invalid_category_root', category }, true);
   }
   const entries = [];
-  const realKnowledgeRoot = fs.realpathSync(knowledgeRoot);
+  const realKnowledgeRoot = fs.realpathSync(actualKnowledgeRoot);
+  const today = shanghaiClock().day;
   for (const file of walkMarkdown(categoryRoot)) {
     try {
       const content = fs.readFileSync(file, 'utf8');
       const { metadata } = parsePage(content);
       if (args.tag_filter && !(metadata.tags || []).some(tag => tag.includes(args.tag_filter))) continue;
-      const relativePath = path.relative(realKnowledgeRoot, file);
-      const actualCategory = relativePath.split(path.sep)[0];
+      if (args.freshness && metadata.freshness !== args.freshness) continue;
+      const relativePath = path.relative(realKnowledgeRoot, file).split(path.sep).join('/');
+      const actualCategory = relativePath.split('/')[0];
+      const reviewAfter = metadata.review_after ? String(metadata.review_after) : null;
+      const isExpired = metadata.freshness === 'current' && Boolean(reviewAfter) && reviewAfter < today;
       entries.push({
         title: content.match(/^#\s+(.+)$/m)?.[1] || path.basename(file, '.md'),
         path: relativePath,
+        canonical_path: `01-Knowledge/${relativePath}`,
+        domain: '01-Knowledge',
         category: actualCategory,
         summary: metadata.summary || '',
         updated: String(metadata.updated || ''),
         created: String(metadata.created || ''),
         status: metadata.status || 'unknown',
         freshness: metadata.freshness || 'unknown',
+        ...(reviewAfter ? { review_after: reviewAfter, is_expired: isExpired } : {}),
         tags: metadata.tags || []
       });
     } catch {}
@@ -618,7 +777,7 @@ export function createServer(options = {}) {
     if (name === 'get_mountain_context') return getMountainContext(args, vaultPath);
     if (name === 'list_second_brain_skills') return listSecondBrainSkills(args, vaultPath);
     if (name === 'read_second_brain_skill') return readSecondBrainSkill(args, vaultPath);
-    if (name === 'search_knowledge') return searchKnowledge(args.query, knowledgeRoot);
+    if (name === 'search_knowledge') return searchKnowledge(args, knowledgeRoot);
     if (name === 'get_entry') return getEntry(args.path, knowledgeRoot);
     if (name === 'list_entries') return listEntries(args, knowledgeRoot);
     if (name === 'capture_from_conversation') {

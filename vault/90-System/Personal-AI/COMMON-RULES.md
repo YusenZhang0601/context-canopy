@@ -39,6 +39,7 @@
 - 原始证据与结论分离。来源链、日期、新鲜度、隐私与不确定性必须诚实；无法核验时使用 `stale` 或 `blocked`，不伪造 `current`。
 - 个人 authority 可采用 `local-only` 或 `private-remote`。公开 Release 仓库只提供代码与种子模板，不能成为个人画像、历史、规则或山脉的写入远端；Git 不理解语义，也不替代 compiler、canonical owner、隐私判断或项目写锁。
 - 原始 Agent 对话、待榨取附件、缓存、厂商会话数据库、中间物和不适合永久历史的敏感原文从一开始就保持在 Git 外。
+- Second Brain MCP 检索路由：查长期方向总纲或具名山脉优先用 `get_mountain_context`；跨 `01-Knowledge`、`02-Insights`、`03-Personal` 三层 canonical 主图谱搜概念、经验、洞察与个人方向用 `search_knowledge`（默认 `scope: "all"`），再用 `get_entry` 读取完整正文、核验 `freshness` 并展开 1-Hop `outbound_relations` 与 `inbound_relations`。
 
 ## 学习与自动合并
 
