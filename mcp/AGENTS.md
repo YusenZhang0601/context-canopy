@@ -20,7 +20,7 @@
 
 ## 不可违反的边界
 
-- 公共 MCP 写入仍只允许 `01-Knowledge`；只读扩展可访问固定 allowlist 中的通用规则、Agent profile、山脉页和 Vault-owned `second-brain-*` Skills，不得开放任意路径读取，也不得为使用 MCP 而把 Insights 或 Personal 错分到 Knowledge。
+- 公共 MCP 写入仍只允许 `01-Knowledge`；只读检索与读取覆盖三层 canonical 主图谱（`01-Knowledge`、`02-Insights`、`03-Personal`）以及固定 allowlist 中的通用规则、Agent profile、山脉页和 Vault-owned `second-brain-*` Skills，不得开放任意路径读取，也不得为使用 MCP 写入而把 Insights 或 Personal 错分到 Knowledge。
 - capture 必填 `card_form: atomic|entity` 与一句话 `atomic_scope`；完整文档先入 `04-Sources`，多主题候选查重后串行提交。
 - 新页必须至少两个不同 relation target 和一个 explicit reciprocal；旧 `related_concepts` 不能代替关系语义。
 - 正文、reciprocal 页面、原子登记、LOG、INDEX、coverage 和最终 compiler check 必须处于同一可回滚事务。
@@ -44,6 +44,7 @@
 cd mcp
 node --check index.js
 node --check lib/vault-writer.js
+node --check lib/search-engine.js
 node --check scripts/stdio-full-vault-smoke.mjs
 npm test
 npm pack --dry-run --json

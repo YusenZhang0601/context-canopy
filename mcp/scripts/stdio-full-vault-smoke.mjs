@@ -385,6 +385,17 @@ async function runSmoke() {
     assert.equal(entries.scope, '01-Knowledge');
     assert.ok(entries.total > 0, 'full Vault list_entries returned no canonical pages');
 
+    const allScopeEntries = parseToolPayload(
+      await client.callTool(
+        { name: 'list_entries', arguments: { scope: 'all', category: 'all', limit: 1 } },
+        undefined,
+        { timeout: 30_000 }
+      ),
+      'list_entries scope=all'
+    );
+    assert.equal(allScopeEntries.scope, 'all');
+    assert.ok(allScopeEntries.total >= entries.total, 'scope=all returned fewer pages than 01-Knowledge');
+
     const commonRules = parseToolPayload(
       await client.callTool(
         { name: 'get_common_rules', arguments: {} },

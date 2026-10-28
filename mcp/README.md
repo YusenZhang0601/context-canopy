@@ -4,10 +4,10 @@ Local MCP server for searching and managing ContextCanopy's portable knowledge b
 
 ## Features
 
-- **Search**: Search across all knowledge base documents with multi-keyword ranking
+- **Search**: Search across the complete canonical graph (`01-Knowledge`, `02-Insights`, `03-Personal`) with `Intl.Segmenter` Chinese/English word segmentation, 6-zone BM25F field weighting (`title`/`aliases`/`summary`/`headings`/`tags`/`body`), and phrase/exact-title bonuses
 - **Capture**: Save durable sources first, then transactionally create or update atomic canonical cards
-- **Browse**: List and filter entries by category, tags, or date
-- **Read**: Get complete content of any knowledge entry
+- **Browse**: List and filter canonical entries across `01-Knowledge`, `02-Insights`, and `03-Personal` by scope, category, tags, or date
+- **Read**: Get complete content, structured frontmatter, freshness status, and 1-hop `outbound_relations` / `inbound_relations` of any canonical entry
 - **Personal AI Context**: Read fixed common rules, Agent profiles, mountain state, and Vault-owned `second-brain-*` Skills
 - **Smart Skill**: host-native `capture-knowledge` skill for intelligent extraction from conversations and working directory (`$capture-knowledge` or `/skills` in Codex; slash form only where the host supports it)
 
@@ -67,10 +67,12 @@ Read one exact `second-brain-*` `SKILL.md` from the Vault authority.
 
 ### 6. `search_knowledge`
 
-Search the knowledge base for relevant information.
+Search the canonical graph (`01-Knowledge`, `02-Insights`, `03-Personal`) with Chinese/English word segmentation and BM25F ranking. Returns clean body excerpts (no raw YAML frontmatter), `layer`, `freshness`, `review_after`, `confidence`, `card_form`, `summary`, and `matched_fields`.
 
 **Parameters:**
-- `query` (string): Search keywords or phrases
+- `query` (string): Search keywords, natural-language phrases, or titles
+- `scope` (enum, optional): `all` (default) | `knowledge` | `insights` | `personal`
+- `limit` (number, optional): Max results (default: 15, max: 50)
 
 ### 7. `capture_from_conversation`
 
@@ -94,24 +96,25 @@ Capture knowledge from conversation/documents and transactionally save to Contex
 
 ### 8. `get_entry`
 
-Read complete content of a knowledge entry.
+Read complete content, parsed frontmatter, freshness status, and 1-hop `outbound_relations` / `inbound_relations` of a canonical entry.
 
-The resolved file must remain inside `01-Knowledge` after both lexical normalization and real-path resolution; symlinks that leave the root are rejected.
+The resolved file must remain inside its canonical layer root (`01-Knowledge`, `02-Insights`, or `03-Personal`) after both lexical normalization and real-path resolution; symlinks that leave the layer root are rejected.
 
 **Parameters:**
-- `path` (string): Relative path within `01-Knowledge`
+- `path` (string): Relative path within `01-Knowledge` (e.g. `Technical/Note.md`) or canonical Vault-relative path across `01-Knowledge`, `02-Insights`, or `03-Personal`
 
 ### 9. `list_entries`
 
-List knowledge entries with filtering and sorting.
+List canonical entries with filtering and sorting.
 
 **Parameters:**
+- `scope` (enum, optional): `knowledge` (default for backward compatibility) | `all` | `insights` | `personal`
 - `category` (enum): `Experience` | `Projects` | `Technical` | `all`
 - `tag_filter` (string, optional): Filter by tag substring
 - `sort_by` (enum): `updated` | `created` | `title`
 - `limit` (number): Max results (default: 20)
 
-Only the four declared category values are accepted. Direct calls cannot use `..` to leave `01-Knowledge`, and a category directory that resolves through a symlink outside the root is rejected.
+Only the declared scope and category values are accepted. Direct calls cannot use `..` to leave the canonical roots, and a category directory that resolves through a symlink outside the root is rejected.
 
 ## Configuration
 

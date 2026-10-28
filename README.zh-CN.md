@@ -143,7 +143,7 @@ npm test
 npm run smoke
 ```
 
-v1.0.2 的 MCP 包从仓库内 `mcp/` 源码安装；本项目不会把它宣传成已发布到 npm 的包。
+v1.1.0 的 MCP 包从仓库内 `mcp/` 源码安装；本项目不会把它宣传成已发布到 npm 的包。
 
 ### 3. 接入 Agent
 
@@ -156,11 +156,12 @@ v1.0.2 的 MCP 包从仓库内 `mcp/` 源码安装；本项目不会把它宣传
 最后用全新会话执行 Doctor 检查，并且只汇报真实验证过的结果。
 ```
 
-## v1.0.2 实际提供什么
+## v1.1.0 实际提供什么
 
 | 能力 | 已包含 |
 |---|---|
 | 可迁移连续性 | 多个独立 Agent 共享用户自有 Markdown authority |
+| 三层主图谱 BM25F 检索引擎 | 零外部依赖 `Intl.Segmenter` 中英文分词、跨 `01-Knowledge`/`02-Insights`/`03-Personal` 的 6 域 BM25F 加权检索、无 YAML 污染的高密度正文片段，以及 `get_entry` 的 1-Hop 双向关系上下文 |
 | 可纠错的学习 | Learn 可按证据新增、纠错、缩限、替代、合并、迁移或退役活动规则，同时保护身份、隐私和权限边界 |
 | 同一个人，不同 Agent | 共同规则加 Claude、Codex、AntiGravity、Hermes 独立角色 |
 | 可编译知识图谱 | 原子 owner、类型关系、新鲜度、反链、来源链与确定性视图 |
@@ -222,6 +223,7 @@ npm run smoke
 cd mcp
 node --check index.js
 node --check lib/vault-writer.js
+node --check lib/search-engine.js
 npm pack --dry-run
 npm audit --audit-level=low
 ```
@@ -233,7 +235,7 @@ CI 直接验证声明的最低版本：Node.js 18 与 Python 3.10。
 - 历史迁移目前是有引导、保留来源的工作流；尚未提供通用的一键厂商导入。
 - 每个真实宿主仍需要自己的全新会话接入证据。
 - Canonical 层是明文文件，不是加密存储；请使用私有 remote、文件权限、加密备份与秘密卫生。
-- v1.0.2 的搜索刻意保持简单；未来可以增加可删除的索引，但不能取代 Markdown authority。
+- v1.1.0 的搜索基于零外部依赖的内存 BM25F 加权排序、原生 `Intl.Segmenter` 中英文分词与 1-Hop 图谱关系直接检索 canonical Markdown，不捆绑或依赖向量数据库与外部 Embedding 服务。
 
 ## 项目名称与兼容性
 
