@@ -230,7 +230,7 @@ npm pack --dry-run
 npm audit --audit-level=low
 ```
 
-CI runs at the declared minimums: Node.js 20 and Python 3.10.
+CI tests the Node.js 20.x and Python 3.10.x release lines.
 
 ## Honest limits
 

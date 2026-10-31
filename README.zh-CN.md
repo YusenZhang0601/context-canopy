@@ -228,7 +228,7 @@ npm pack --dry-run
 npm audit --audit-level=low
 ```
 
-CI 直接验证声明的最低版本：Node.js 20 与 Python 3.10。
+CI 测试 Node.js 20.x 与 Python 3.10.x 系列。
 
 ## 诚实的限制
 
