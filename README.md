@@ -104,7 +104,7 @@ This proves the portable core across isolated local client lifecycles. It does *
 
 ### Requirements
 
-- Node.js 18+
+- Node.js 20+
 - Python 3.10+ with PyYAML (`python3 -m pip install pyyaml`)
 - GitHub CLI for the recommended private-template bootstrap
 - Obsidian is optional; any Markdown editor works
@@ -206,7 +206,7 @@ Documentation checked **2026-10-23** for the three closest projects in the lands
 | User-controlled storage | Canonical Markdown in your repository | Canonical Markdown; local SQLite index | Canonical Markdown; disposable DuckDB index | Canonical local SQLite; rebuildable search indexes |
 | Evidence and freshness | [Immutable sources](vault/04-Sources/README.md), provenance, and freshness checks | Observations and typed note links | Provenance, validity dates, and supersession | [Evidence cards](https://github.com/AVIDS2/memorix/blob/79bacd303c03376137d10f52f75906006a34b4af/docs/API_REFERENCE.md#evidence-cards-and-feedback) with source references, hashes, and freshness |
 | Agent roles / memory scope | [Shared user rules + distinct role profiles](AGENTS.md#privacy-and-authority-boundary) | Separate knowledge projects | Project-scoped automatic recall by default | [Project, personal, and team visibility](https://github.com/AVIDS2/memorix/blob/79bacd303c03376137d10f52f75906006a34b4af/docs/API_REFERENCE.md#memorix_store) |
-| Local setup | Node.js 18+; Python 3.10+ / PyYAML | Python 3.12+; `uv` install | Python 3.11+ / `uv`; local model download | Node.js 22.18+; Git; LLM/embeddings optional |
+| Local setup | Node.js 20+; Python 3.10+ / PyYAML | Python 3.12+; `uv` install | Python 3.11+ / `uv`; local model download | Node.js 22.18+; Git; LLM/embeddings optional |
 
 Role profiles and memory scopes are different mechanisms, not equivalent security guarantees. Skills and MCP-tool counts describe packaging, not comparable units of capability. This is a documentation comparison: no cross-project latency, token-cost, or task-success benchmark has been run.
 
@@ -230,7 +230,7 @@ npm pack --dry-run
 npm audit --audit-level=low
 ```
 
-CI runs at the declared minimums: Node.js 18 and Python 3.10.
+CI tests the Node.js 20.x and Python 3.10.x release lines.
 
 ## Honest limits
 
