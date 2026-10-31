@@ -102,7 +102,7 @@
 
 ### 环境要求
 
-- Node.js 18+
+- Node.js 20+
 - Python 3.10+ 与 PyYAML（`python3 -m pip install pyyaml`）
 - 推荐使用 GitHub CLI 创建私人模板仓库
 - Obsidian 可选；任意 Markdown 编辑器均可
@@ -204,7 +204,7 @@ ContextCanopy 不想成为又一个托管向量 Memory API，也不是 LifeOS �
 | 用户控制的存储 | 仓库中的 canonical Markdown | Canonical Markdown；本地 SQLite 索引 | Canonical Markdown；可删除重建的 DuckDB 索引 | Canonical 本地 SQLite；可重建的检索索引 |
 | 证据与时效 | [不可变来源](vault/04-Sources/README.md)、来源链与新鲜度检查 | Observations 与带类型的笔记链接 | 来源信息、有效期与取代关系 | 含来源引用、哈希与新鲜度的[证据卡](https://github.com/AVIDS2/memorix/blob/79bacd303c03376137d10f52f75906006a34b4af/docs/API_REFERENCE.md#evidence-cards-and-feedback) |
 | Agent 角色 / 记忆范围 | [共享用户规则 + 独立角色档案](AGENTS.md#privacy-and-authority-boundary) | 独立的知识项目 | 自动召回默认限定于项目 | [项目、个人与团队可见性](https://github.com/AVIDS2/memorix/blob/79bacd303c03376137d10f52f75906006a34b4af/docs/API_REFERENCE.md#memorix_store) |
-| 本地安装 | Node.js 18+；Python 3.10+ / PyYAML | Python 3.12+；通过 `uv` 安装 | Python 3.11+ / `uv`；下载本地模型 | Node.js 22.18+；Git；LLM / embeddings 可选 |
+| 本地安装 | Node.js 20+；Python 3.10+ / PyYAML | Python 3.12+；通过 `uv` 安装 | Python 3.11+ / `uv`；下载本地模型 | Node.js 22.18+；Git；LLM / embeddings 可选 |
 
 角色档案与记忆范围是不同机制，不代表等价的安全保证。Skills 与 MCP 工具数量描述的是功能如何拆分封装，不能直接用于比较产品能力。本表仅核查文档，未进行跨项目延迟、token 成本或任务成功率对测。
 
@@ -228,7 +228,7 @@ npm pack --dry-run
 npm audit --audit-level=low
 ```
 
-CI 直接验证声明的最低版本：Node.js 18 与 Python 3.10。
+CI 直接验证声明的最低版本：Node.js 20 与 Python 3.10。
 
 ## 诚实的限制
 
