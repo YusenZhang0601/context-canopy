@@ -462,3 +462,44 @@ tags:
   assert.equal(allListed.scope, 'all');
   assert.equal(allListed.total, 4);
 });
+
+test('search_knowledge, get_entry, and list_entries terminate without duplicates on intra-vault symlink cycles', t => {
+  const vault = fs.mkdtempSync(path.join(os.tmpdir(), 'second-brain-symlink-cycle-'));
+  t.after(() => fs.rmSync(vault, { recursive: true, force: true }));
+  const knowledge = path.join(vault, '01-Knowledge');
+  const technical = path.join(knowledge, 'Technical');
+  const experience = path.join(knowledge, 'Experience');
+  fs.mkdirSync(technical, { recursive: true });
+  fs.mkdirSync(experience, { recursive: true });
+
+  fs.writeFileSync(path.join(technical, 'SymlinkLoopTarget.md'), page('SymlinkLoopTarget'));
+  fs.writeFileSync(path.join(experience, 'NeighborCard.md'), page('NeighborCard'));
+  fs.writeFileSync(path.join(technical, 'raw.txt'), 'non-markdown content that should never be indexed');
+
+  // Ancestor loop (01-Knowledge/Technical/loop -> ..), self loop, and mutual 2-cycle
+  fs.symlinkSync('..', path.join(technical, 'loop'));
+  fs.symlinkSync('.', path.join(technical, 'self'));
+  fs.symlinkSync('../Experience', path.join(technical, 'to-experience'));
+  fs.symlinkSync('../Technical', path.join(experience, 'to-technical'));
+
+  // Intra-root file symlink to an existing .md and a .md-named symlink to a .txt file
+  fs.symlinkSync('SymlinkLoopTarget.md', path.join(technical, 'DuplicateAlias.md'));
+  fs.symlinkSync('raw.txt', path.join(technical, 'FakeMarkdown.md'));
+
+  const searchRes = payload(searchKnowledge({ query: 'SymlinkLoopTarget' }, knowledge));
+  assert.equal(searchRes.totalResults, 1);
+  assert.equal(searchRes.results[0].canonical_path, '01-Knowledge/Technical/SymlinkLoopTarget.md');
+
+  const fakeSearch = payload(searchKnowledge({ query: 'non-markdown' }, knowledge));
+  assert.equal(fakeSearch.totalResults, 0);
+
+  const listAll = payload(listEntries({ scope: 'all' }, knowledge));
+  assert.equal(listAll.total, 2);
+  assert.deepEqual(
+    listAll.entries.map(e => e.canonical_path).sort(),
+    ['01-Knowledge/Experience/NeighborCard.md', '01-Knowledge/Technical/SymlinkLoopTarget.md']
+  );
+
+  const entryRes = payload(getEntry('Technical/SymlinkLoopTarget.md', knowledge));
+  assert.equal(entryRes.canonical_path, '01-Knowledge/Technical/SymlinkLoopTarget.md');
+});
