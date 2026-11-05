@@ -6,7 +6,7 @@ All notable changes to ContextCanopy are documented here.
 
 ### Fixed
 
-- Resolve the MCP SDK's transitive `@hono/node-server` dependency to 2.1.6, including the fix for [GHSA-rmxm-3fg6-px4f](https://github.com/advisories/GHSA-rmxm-3fg6-px4f), so clean repository installs pass the dependency audit.
+- Resolve the MCP SDK's transitive `@hono/node-server` dependency to 2.1.6 so clean repository installs pass the dependency audit. This includes the protected-static-path middleware fix. [GHSA-rmxm-3fg6-px4f](https://github.com/advisories/GHSA-rmxm-3fg6-px4f)
 
 ### Changed
 
