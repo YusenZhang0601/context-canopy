@@ -272,6 +272,8 @@ function walkSafeMarkdownFiles(rootDir) {
   }
 
   const files = [];
+  const visitedDirs = new Set([realRoot]);
+  const seenFiles = new Set();
   const stack = [realRoot];
   while (stack.length > 0) {
     const current = stack.pop();
@@ -290,9 +292,15 @@ function walkSafeMarkdownFiles(rootDir) {
         }
         const stat = fs.statSync(realEntry);
         if (stat.isDirectory()) {
-          stack.push(realEntry);
-        } else if (stat.isFile() && entry.name.endsWith('.md')) {
-          files.push({ filePath: realEntry, realRoot, mtimeMs: stat.mtimeMs, size: stat.size });
+          if (!visitedDirs.has(realEntry)) {
+            visitedDirs.add(realEntry);
+            stack.push(realEntry);
+          }
+        } else if (stat.isFile() && entry.name.endsWith('.md') && realEntry.endsWith('.md')) {
+          if (!seenFiles.has(realEntry)) {
+            seenFiles.add(realEntry);
+            files.push({ filePath: realEntry, realRoot, mtimeMs: stat.mtimeMs, size: stat.size });
+          }
         }
       } catch {
         // Ignore broken or escaping symlinks
