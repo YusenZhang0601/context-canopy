@@ -13,6 +13,8 @@ Local MCP server for searching and managing ContextCanopy's portable knowledge b
 
 ## Quick Start
 
+Requires Node.js 20 or later.
+
 ### Use the Skill (Recommended)
 
 The easiest way to capture knowledge:

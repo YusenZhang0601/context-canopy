@@ -2,6 +2,16 @@
 
 All notable changes to ContextCanopy are documented here.
 
+## [Unreleased]
+
+### Fixed
+
+- Resolve the MCP SDK's transitive `@hono/node-server` dependency to 2.1.6 so clean repository installs pass the dependency audit. This includes the protected-static-path middleware fix. [GHSA-rmxm-3fg6-px4f](https://github.com/advisories/GHSA-rmxm-3fg6-px4f)
+
+### Changed
+
+- Require Node.js 20 or later for the repository and standalone MCP package. Align the English and Chinese setup requirements and CI with the Node.js 20.x release line.
+
 ## [1.1.0] - 2026-10-27
 
 ### Highlights
