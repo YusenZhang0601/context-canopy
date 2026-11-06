@@ -17,6 +17,7 @@
   <a href="LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-2ea44f.svg" /></a>
   <a href="https://modelcontextprotocol.io"><img alt="MCP" src="https://img.shields.io/badge/MCP-compatible-6f42c1.svg" /></a>
   <a href="https://obsidian.md"><img alt="Obsidian" src="https://img.shields.io/badge/Obsidian-ready-7c3aed.svg" /></a>
+  <a href="https://hub.xerj.org/contributors/YusenZhang0601"><img alt="XERJ Corpus Hub contributor" src="https://hub.xerj.org/contributors/YusenZhang0601/badge.svg" /></a>
   <img alt="Local-first" src="https://img.shields.io/badge/authority-local--first-111827.svg" />
 </p>
 
@@ -29,6 +30,8 @@
 </p>
 
 </div>
+
+ContextCanopy v1.1.0 was selected for the [XERJ Corpus Hub](https://hub.xerj.org/corpus/yusenzhang0601--context-canopy) in October 2026 as a reference implementation for AI coding agents, pinned to commit `6f6616d` under the MIT licence with author attribution. [Contributor page](https://hub.xerj.org/contributors/YusenZhang0601).
 
 ---
 
